@@ -1,0 +1,169 @@
+---
+layout: default
+---
+
+<section class="hero">
+
+    <p class="eyebrow">A collection of writing</p>
+
+    <h1>
+        Notes on books,<br>
+        writing &amp; life.
+    </h1>
+
+    <p class="intro">
+        Essays, stories, reviews, and other attempts
+        to make sense of things.
+    </p>
+
+</section>
+
+
+<section class="categories">
+
+    <a href="/book-reviews/" class="category">
+
+        <span class="index">01</span>
+
+        <div class="category-content">
+
+            <h2>Book reviews</h2>
+
+            <p>
+                Reading notes, criticism,
+                and arguments with books.
+            </p>
+
+            <div class="latest">
+
+                {% assign reviews = site.posts
+                    | where: "category", "book-reviews" %}
+
+                {% for post in reviews limit:3 %}
+
+                <div class="latest-post">
+
+                    <span>
+                        {{ post.date | date: "%d.%m.%y" }}
+                    </span>
+
+                    <strong>
+                        {{ post.title }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <span class="arrow">↗</span>
+
+    </a>
+
+
+    <a href="/fiction/" class="category">
+
+        <span class="index">02</span>
+
+        <div class="category-content">
+
+            <h2>Fiction</h2>
+
+            <p>
+                Stories, fragments,
+                experiments, and inventions.
+            </p>
+
+            <div class="latest">
+
+                {% assign fiction = site.posts
+                    | where: "category", "fiction" %}
+
+                {% for post in fiction limit:3 %}
+
+                <div class="latest-post">
+
+                    <span>
+                        {{ post.date | date: "%d.%m.%y" }}
+                    </span>
+
+                    <strong>
+                        {{ post.title }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <span class="arrow">↗</span>
+
+    </a>
+
+
+    <a href="/creative-non-fiction/" class="category">
+
+        <span class="index">03</span>
+
+        <div class="category-content">
+
+            <h2>Creative<br>non-fiction</h2>
+
+            <p>
+                Essays somewhere between
+                observation and argument.
+            </p>
+
+            <div class="latest">
+
+                {% assign essays = site.posts
+                    | where: "category", "creative-non-fiction" %}
+
+                {% for post in essays limit:3 %}
+
+                <div class="latest-post">
+
+                    <span>
+                        {{ post.date | date: "%d.%m.%y" }}
+                    </span>
+
+                    <strong>
+                        {{ post.title }}
+                    </strong>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <span class="arrow">↗</span>
+
+    </a>
+
+</section>
+
+
+<section class="about" id="about">
+
+    <span class="index">∴</span>
+
+    <div>
+
+        <h2>About</h2>
+
+        <p>
+            A place for writing.
+        </p>
+
+    </div>
+
+</section>
