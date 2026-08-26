@@ -1,0 +1,17 @@
+title: "twohalv.es"
+description: "A collection of writing."
+
+url: "https://twohalv.es"
+
+markdown: kramdown
+
+collections:
+  posts:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
