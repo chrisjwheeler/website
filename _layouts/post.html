@@ -1,0 +1,51 @@
+---
+layout: default
+---
+
+<article class="article">
+
+    <header class="article-header">
+
+        <p class="eyebrow">
+
+            {{ page.category | replace: "-", " " }}
+
+            ·
+
+            {{ page.date | date: "%d.%m.%Y" }}
+
+        </p>
+
+
+        <h1>
+            {{ page.title }}
+        </h1>
+
+
+        {% if page.subtitle %}
+
+        <p class="article-subtitle">
+            {{ page.subtitle }}
+        </p>
+
+        {% endif %}
+
+    </header>
+
+
+    <div class="article-body">
+
+        {{ content }}
+
+    </div>
+
+
+    <footer class="article-footer">
+
+        <a href="{{ '/' | relative_url }}">
+            ← twohalv.es
+        </a>
+
+    </footer>
+
+</article>
