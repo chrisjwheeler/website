@@ -7,8 +7,6 @@ category: book-reviews
 
 <section class="category-page">
 
-    <p class="eyebrow">01 · Book reviews</p>
-
     <h1>Book reviews</h1>
 
     <div class="post-list">

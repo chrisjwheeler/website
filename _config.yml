@@ -5,6 +5,9 @@ url: "https://twohalv.es"
 
 markdown: kramdown
 
+include:
+  - _pages
+
 collections:
   posts:
     output: true

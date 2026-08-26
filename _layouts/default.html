@@ -25,26 +25,36 @@
 </head>
 
 
-<body>
+<body id="top">
 
 <header class="site-header">
-
-    <a href="{{ '/' | relative_url }}"
-       class="logo">
-
-        twohalv<span>.es</span>
-
+    <a href="{{ '/' | relative_url }}" class="logo" aria-label="twohalv.es home">
+        twohalv.es
     </a>
 
+    {% unless page.url == "/" %}
+    <div class="header-path">
+        <nav aria-label="Breadcrumb">
+            <a href="{{ '/' | relative_url }}">writing</a>
 
-    <nav>
+            {% if page.category %}
+            <span aria-hidden="true">/</span>
 
-        <a href="{{ '/#about' | relative_url }}">
-            About
-        </a>
+                {% if page.layout == "post" %}
+                <a href="{{ page.category | prepend: '/' | append: '/' | relative_url }}">{{ page.category | replace: "-", " " }}</a>
+                <span aria-hidden="true">/</span>
+                <span>{{ page.title }}</span>
+                {% else %}
+                <span>{{ page.title | downcase }}</span>
+                {% endif %}
+            {% endif %}
+        </nav>
 
-    </nav>
-
+        {% if page.layout == "post" %}
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d %B %Y" | downcase }}</time>
+        {% endif %}
+    </div>
+    {% endunless %}
 </header>
 
 
@@ -54,14 +64,6 @@
 
 </main>
 
-
-<footer>
-
-    <span>twohalv.es</span>
-
-    <span>∴</span>
-
-</footer>
 
 </body>
 

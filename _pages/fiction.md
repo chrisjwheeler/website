@@ -7,8 +7,6 @@ category: fiction
 
 <section class="category-page">
 
-    <p class="eyebrow">02 · Fiction</p>
-
     <h1>Fiction</h1>
 
     <div class="post-list">

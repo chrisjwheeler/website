@@ -5,18 +5,6 @@ layout: default
 <article class="article">
 
     <header class="article-header">
-
-        <p class="eyebrow">
-
-            {{ page.category | replace: "-", " " }}
-
-            ·
-
-            {{ page.date | date: "%d.%m.%Y" }}
-
-        </p>
-
-
         <h1>
             {{ page.title }}
         </h1>
@@ -34,18 +22,8 @@ layout: default
 
 
     <div class="article-body">
-
         {{ content }}
 
     </div>
-
-
-    <footer class="article-footer">
-
-        <a href="{{ '/' | relative_url }}">
-            ← twohalv.es
-        </a>
-
-    </footer>
 
 </article>

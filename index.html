@@ -2,168 +2,38 @@
 layout: default
 ---
 
-<section class="hero">
+<nav class="directory" aria-label="Writing">
+    <div class="tree-root">writing/</div>
 
-    <p class="eyebrow">A collection of writing</p>
+    {% assign category_names = "book-reviews|fiction|creative-non-fiction" | split: "|" %}
+    {% assign category_titles = "book reviews|fiction|creative non-fiction" | split: "|" %}
 
-    <h1>
-        Notes on books,<br>
-        writing &amp; life.
-    </h1>
+    <div class="tree-branches">
+        {% for category_name in category_names %}
+            {% assign category_posts = site.posts | where: "category", category_name %}
+            <section class="tree-branch">
+                <a href="{{ category_name | prepend: '/' | append: '/' | relative_url }}" class="folder-row">
+                    <span class="branch-line" aria-hidden="true">{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+                    <span class="folder-name">{{ category_titles[forloop.index0] }}/</span>
+                </a>
 
-    <p class="intro">
-        Essays, stories, reviews, and other attempts
-        to make sense of things.
-    </p>
-
-</section>
-
-
-<section class="categories">
-
-    <a href="/book-reviews/" class="category">
-
-        <span class="index">01</span>
-
-        <div class="category-content">
-
-            <h2>Book reviews</h2>
-
-            <p>
-                Reading notes, criticism,
-                and arguments with books.
-            </p>
-
-            <div class="latest">
-
-                {% assign reviews = site.posts
-                    | where: "category", "book-reviews" %}
-
-                {% for post in reviews limit:3 %}
-
-                <div class="latest-post">
-
-                    <span>
-                        {{ post.date | date: "%d.%m.%y" }}
-                    </span>
-
-                    <strong>
-                        {{ post.title }}
-                    </strong>
-
+                {% if category_posts.size > 0 %}
+                <div class="tree-spacer" aria-hidden="true">{% unless forloop.last %}│{% endunless %}</div>
+                <div class="branch-posts">
+                    {% for post in category_posts %}
+                    <a href="{{ post.url | relative_url }}" class="file-row">
+                        <span class="branch-line" aria-hidden="true">{% if forloop.parentloop.last %}&nbsp;&nbsp;&nbsp;{% else %}│&nbsp;&nbsp;{% endif %}{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+                        <span>{{ post.title }}</span>
+                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+                    </a>
+                    {% endfor %}
                 </div>
+                {% endif %}
 
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        <span class="arrow">↗</span>
-
-    </a>
-
-
-    <a href="/fiction/" class="category">
-
-        <span class="index">02</span>
-
-        <div class="category-content">
-
-            <h2>Fiction</h2>
-
-            <p>
-                Stories, fragments,
-                experiments, and inventions.
-            </p>
-
-            <div class="latest">
-
-                {% assign fiction = site.posts
-                    | where: "category", "fiction" %}
-
-                {% for post in fiction limit:3 %}
-
-                <div class="latest-post">
-
-                    <span>
-                        {{ post.date | date: "%d.%m.%y" }}
-                    </span>
-
-                    <strong>
-                        {{ post.title }}
-                    </strong>
-
-                </div>
-
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        <span class="arrow">↗</span>
-
-    </a>
-
-
-    <a href="/creative-non-fiction/" class="category">
-
-        <span class="index">03</span>
-
-        <div class="category-content">
-
-            <h2>Creative<br>non-fiction</h2>
-
-            <p>
-                Essays somewhere between
-                observation and argument.
-            </p>
-
-            <div class="latest">
-
-                {% assign essays = site.posts
-                    | where: "category", "creative-non-fiction" %}
-
-                {% for post in essays limit:3 %}
-
-                <div class="latest-post">
-
-                    <span>
-                        {{ post.date | date: "%d.%m.%y" }}
-                    </span>
-
-                    <strong>
-                        {{ post.title }}
-                    </strong>
-
-                </div>
-
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        <span class="arrow">↗</span>
-
-    </a>
-
-</section>
-
-
-<section class="about" id="about">
-
-    <span class="index">∴</span>
-
-    <div>
-
-        <h2>About</h2>
-
-        <p>
-            A place for writing.
-        </p>
-
+                {% unless forloop.last %}
+                <div class="tree-spacer" aria-hidden="true">│</div>
+                {% endunless %}
+            </section>
+        {% endfor %}
     </div>
-
-</section>
+</nav>

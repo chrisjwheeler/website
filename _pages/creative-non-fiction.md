@@ -7,8 +7,6 @@ category: creative-non-fiction
 
 <section class="category-page">
 
-    <p class="eyebrow">03 · Creative non-fiction</p>
-
     <h1>Creative non-fiction</h1>
 
     <div class="post-list">

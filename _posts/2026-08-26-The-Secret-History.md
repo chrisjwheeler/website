@@ -5,8 +5,6 @@ category: book-reviews
 subtitle: "Enjoyable but 2/5"
 ---
 
-# The Secret History
-
 The book was enjoyable, especially towards the middle, but even early on I knew that I would not be impressed by the end. The main strengths of the book is the sexiness of the set. Hampden, college and the characters in it sell the “I’m young, rich and stupid” vibes excellently. To the point that you want to participate yourself. I think the character of Judy Poovey sells this excellently.
 
 I expect that Tartt’s ambition for the book was to investigate the superficial, and some characters achieve this. However, I think too often the characters became flat instead of superficial. They lacked compelling emotion even when doing superficial things, and often scenes which would’ve been helpful for character building were skipped. For instance, Julian is almost a ghost in the book (and not in a good way). He just isn’t a character. Thus Richard’s revelation that Julian is like everyone else is haunting for him, but not the reader.  Even Henry who is meant to be the star of the show didn’t quite feel real. Again, I this is due to a lack of direct conversation or examples outside those moving the narrative thread. I did not find his coldness compelling, and unfortunately he was not haunting. The rest of the Classics class are worse, especially Charles and Richard. I am not quite sure why Tartt decided to make Richard so flat, and the only attempts to give him character simultaneously made him less likeable. I have no issue with an unlikable character, but it is just annoying when that it is the only interesting thing about them. 
