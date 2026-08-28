@@ -39,6 +39,10 @@
             <a href="{{ '/work/' | relative_url }}">work</a>
             {% unless page.url == "/work/" %}
             <span aria-hidden="true">/</span>
+            {% if page.parent and page.parent != "work" %}
+            <a href="{{ page.parent | prepend: '/work/' | append: '/' | relative_url }}">{{ page.parent | replace: '-', ' ' }}</a>
+            <span aria-hidden="true">/</span>
+            {% endif %}
             <span>{{ page.title | downcase }}</span>
             {% endunless %}
             {% else %}

@@ -2,6 +2,8 @@
 
 {% assign folder_names = "mathematics" | split: "|" %}
 {% assign folder_titles = "mathematics" | split: "|" %}
+{% assign paper_slugs = "loss-crossovers" | split: "|" %}
+{% assign paper_titles = "loss crossovers mini-project" | split: "|" %}
 
 <div class="tree-branches">
     {% for folder_name in folder_names %}
@@ -11,6 +13,16 @@
                 <span class="branch-line" aria-hidden="true">{% if branch_is_last %}└──{% else %}├──{% endif %}</span>
                 <span class="folder-name">{{ folder_titles[forloop.index0] }}/</span>
             </a>
+
+            <div class="tree-spacer" aria-hidden="true">{% unless branch_is_last %}│{% endunless %}</div>
+            <div class="branch-posts">
+                {% for paper_slug in paper_slugs %}
+                <a href="{{ '/work/' | append: folder_name | append: '/' | append: paper_slug | append: '/' | relative_url }}" class="file-row">
+                    <span class="branch-line" aria-hidden="true">{% unless branch_is_last %}│&nbsp;&nbsp;{% else %}&nbsp;&nbsp;&nbsp;{% endunless %}{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+                    <span class="file-name">{{ paper_titles[forloop.index0] }}</span>
+                </a>
+                {% endfor %}
+            </div>
         </section>
     {% endfor %}
 </div>

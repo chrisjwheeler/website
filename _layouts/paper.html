@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if page.title %}
+            {{ page.title }} — twohalv.es
+        {% else %}
+            twohalv.es
+        {% endif %}
+    </title>
+
+    <meta name="description"
+          content="{{ page.description | default: site.description }}">
+
+    <link rel="stylesheet"
+          href="{{ '/assets/style.css' | relative_url }}">
+    <link rel="stylesheet"
+          href="{{ page.paper_assets | append: 'LaTeXML.css' | relative_url }}">
+    <link rel="stylesheet"
+          href="{{ page.paper_assets | append: 'ltx-article.css' | relative_url }}">
+    <link rel="stylesheet"
+          href="{{ '/assets/paper.css' | relative_url }}">
+
+</head>
+
+
+<body id="top" class="paper-page">
+
+<header class="site-header">
+    <a href="{{ '/' | relative_url }}" class="logo" aria-label="twohalv.es home">
+        twohalv.es
+    </a>
+
+    <div class="header-path">
+        <nav aria-label="Breadcrumb">
+            <a href="{{ '/work/' | relative_url }}">work</a>
+            <span aria-hidden="true">/</span>
+            {% if page.parent %}
+            <a href="{{ page.parent | prepend: '/work/' | append: '/' | relative_url }}">{{ page.parent | replace: '-', ' ' }}</a>
+            <span aria-hidden="true">/</span>
+            {% endif %}
+            <span>{{ page.short_title | default: page.title | downcase }}</span>
+        </nav>
+    </div>
+</header>
+
+
+<main class="paper-main">
+
+    <div class="ltx_page_main">
+        {{ content }}
+    </div>
+
+</main>
+
+
+</body>
+
+</html>
