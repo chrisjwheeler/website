@@ -1,0 +1,34 @@
+<div class="tree-root">writing/</div>
+
+{% assign category_names = "book-reviews|fiction|creative-non-fiction" | split: "|" %}
+{% assign category_titles = "book reviews|fiction|creative non-fiction" | split: "|" %}
+
+<div class="tree-branches">
+    {% for category_name in category_names %}
+        {% assign branch_is_last = forloop.last %}
+        {% assign category_posts = site.posts | where: "category", category_name | sort: "date" | reverse %}
+        <section class="tree-branch">
+            <a href="{{ category_name | prepend: '/' | append: '/' | relative_url }}" class="folder-row">
+                <span class="branch-line" aria-hidden="true">{% if branch_is_last %}└──{% else %}├──{% endif %}</span>
+                <span class="folder-name">{{ category_titles[forloop.index0] }}/</span>
+            </a>
+
+            {% if category_posts.size > 0 %}
+            <div class="tree-spacer" aria-hidden="true">{% unless branch_is_last %}│{% endunless %}</div>
+            <div class="branch-posts">
+                {% for post in category_posts %}
+                <a href="{{ post.url | relative_url }}" class="file-row">
+                    <span class="branch-line" aria-hidden="true">{% unless branch_is_last %}│&nbsp;&nbsp;{% else %}&nbsp;&nbsp;&nbsp;{% endunless %}{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+                    <span class="file-name">{{ post.title }}</span>
+                    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% unless branch_is_last %}
+            <div class="tree-spacer" aria-hidden="true">│</div>
+            {% endunless %}
+        </section>
+    {% endfor %}
+</div>

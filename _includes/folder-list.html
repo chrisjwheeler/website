@@ -1,0 +1,19 @@
+<nav class="directory" aria-label="{{ include.title }}">
+    <div class="tree-root">{{ include.title | downcase }}/</div>
+
+    {% assign folder_names = include.folders | split: "|" %}
+    {% assign folder_titles = include.folder_titles | split: "|" %}
+
+    {% if folder_names.size > 0 %}
+    <div class="tree-files">
+        {% for folder_name in folder_names %}
+        <a href="{{ include.base_path | append: folder_name | append: '/' | relative_url }}" class="file-row">
+            <span class="branch-line" aria-hidden="true">{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+            <span class="file-name">{{ folder_titles[forloop.index0] }}/</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="tree-empty">No items yet.</p>
+    {% endif %}
+</nav>

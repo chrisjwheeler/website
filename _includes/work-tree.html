@@ -1,0 +1,16 @@
+<div class="tree-root">work/</div>
+
+{% assign folder_names = "mathematics" | split: "|" %}
+{% assign folder_titles = "mathematics" | split: "|" %}
+
+<div class="tree-branches">
+    {% for folder_name in folder_names %}
+        {% assign branch_is_last = forloop.last %}
+        <section class="tree-branch">
+            <a href="{{ '/work/' | append: folder_name | append: '/' | relative_url }}" class="folder-row">
+                <span class="branch-line" aria-hidden="true">{% if branch_is_last %}└──{% else %}├──{% endif %}</span>
+                <span class="folder-name">{{ folder_titles[forloop.index0] }}/</span>
+            </a>
+        </section>
+    {% endfor %}
+</div>

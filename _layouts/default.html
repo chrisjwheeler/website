@@ -35,6 +35,13 @@
     {% unless page.url == "/" %}
     <div class="header-path">
         <nav aria-label="Breadcrumb">
+            {% if page.section == "work" %}
+            <a href="{{ '/work/' | relative_url }}">work</a>
+            {% unless page.url == "/work/" %}
+            <span aria-hidden="true">/</span>
+            <span>{{ page.title | downcase }}</span>
+            {% endunless %}
+            {% else %}
             <a href="{{ '/' | relative_url }}">writing</a>
 
             {% if page.category %}
@@ -47,6 +54,7 @@
                 {% else %}
                 <span>{{ page.title | downcase }}</span>
                 {% endif %}
+            {% endif %}
             {% endif %}
         </nav>
 

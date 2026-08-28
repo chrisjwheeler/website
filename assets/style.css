@@ -102,9 +102,22 @@ main {
 }
 
 .tree-root { margin-bottom: 9px; }
+
+.tree-section-gap {
+    height: 2.5em;
+}
 .tree-branch { margin: 0; }
-.tree-branches {
-    line-height: 1;
+.tree-branches,
+.tree-files {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+}
+
+.branch-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
 }
 
 .tree-spacer {
@@ -125,38 +138,19 @@ main {
     color: var(--muted);
     white-space: pre;
 }
-.folder-name { font-weight: normal; }
-.file-row time { margin-left: auto; color: var(--muted); font-size: 12px; }
+.folder-name,
+.file-name { font-weight: normal; }
+.file-row time { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
 
 .folder-row:hover .folder-name,
-.file-row:hover span:nth-child(2) { text-decoration: underline; text-underline-offset: 4px; }
+.file-row:hover .file-name { text-decoration: underline; text-underline-offset: 4px; }
 
-/* Category indexes */
-.category-page { padding: 80px 0 130px; }
-
-.category-page h1 {
-    margin: 12px 0 65px;
-    font-size: clamp(42px, 7vw, 64px);
-    font-weight: 400;
-    line-height: 1;
+.tree-empty {
+    margin: 0.35em 0 0;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 13px;
 }
-
-.post-list { border-top: 1px solid var(--line); }
-
-.post-row {
-    position: relative;
-    display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 30px;
-    padding: 24px 32px 24px 0;
-    border-bottom: 1px solid var(--line);
-}
-
-.post-row:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
-.post-date { color: var(--muted); font-family: var(--mono); font-size: 12px; }
-.post-row h2 { margin: 0 0 7px; font-size: 24px; font-weight: 400; line-height: 1.2; }
-.post-row p { max-width: 580px; margin: 0; color: var(--muted); font-size: 16px; }
-.arrow { position: absolute; top: 24px; right: 0; color: var(--muted); }
 
 /* Posts */
 .article {
@@ -215,9 +209,6 @@ main {
     .logo { font-size: 23px; }
     .directory { padding: 65px 0 100px; font-size: 13px; }
     .file-row time { display: none; }
-    .category-page { padding: 60px 0 100px; }
-    .category-page h1 { margin-bottom: 45px; }
-    .post-row { grid-template-columns: 1fr; gap: 7px; }
     .header-path {
         overflow-x: auto;
         white-space: nowrap;

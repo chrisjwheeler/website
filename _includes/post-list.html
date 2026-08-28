@@ -1,0 +1,19 @@
+<nav class="directory" aria-label="{{ include.title }}">
+    <div class="tree-root">{{ include.title | downcase }}/</div>
+
+    {% assign posts = site.posts | where: "category", include.category | sort: "date" | reverse %}
+
+    {% if posts.size > 0 %}
+    <div class="tree-files">
+        {% for post in posts %}
+        <a href="{{ post.url | relative_url }}" class="file-row">
+            <span class="branch-line" aria-hidden="true">{% if forloop.last %}└──{% else %}├──{% endif %}</span>
+            <span class="file-name">{{ post.title }}</span>
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="tree-empty">No posts yet.</p>
+    {% endif %}
+</nav>
