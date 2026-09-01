@@ -23,17 +23,17 @@
 }
 
 :root {
-    --background: #09121f;
+    --background: #041736;
     --text: #e7e9e6;
     --muted: #9ba2a8;
     --line: #39424b;
     --paper: #f4f3ed;
     --ink: #17191b;
     --paper-muted: #656565;
-    --max-width: 900px;
+    --max-width: 945px;
     --page-gutter: 24px;
     --banner-indent: 5%;
-    --page-width: 8.5in;
+    --page-width: 8.925in;
     --page-pad-y: 0.85in;
     --page-pad-x: 1.45in;
     --serif: "Latin Modern Roman", "Computer Modern Serif", serif;
@@ -41,14 +41,17 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+    font-size: 110%;
+    scroll-behavior: smooth;
+}
 
 body {
     margin: 0;
     background: var(--background);
     color: var(--text);
     font-family: var(--serif);
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 1.55;
 }
 
@@ -67,7 +70,7 @@ main {
 
 .logo {
     font-family: var(--serif);
-    font-size: 26px;
+    font-size: 1.625rem;
 }
 
 .header-path {
@@ -77,7 +80,7 @@ main {
     margin-top: 18px;
     color: var(--muted);
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 1.4;
 }
 
@@ -94,7 +97,7 @@ main {
 .index {
     color: var(--muted);
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     text-transform: lowercase;
 }
 
@@ -103,7 +106,7 @@ main {
     width: 100%;
     padding: 90px var(--banner-indent) 150px;
     font-family: var(--mono);
-    font-size: 15px;
+    font-size: 0.9375rem;
 }
 
 .tree-root { margin-bottom: 9px; }
@@ -154,7 +157,7 @@ main {
 .file-row time {
     margin-left: auto;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: nowrap;
     flex: none;
     font-variant-numeric: tabular-nums;
@@ -167,7 +170,7 @@ main {
     margin: 0.35em 0 0;
     color: var(--muted);
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 /* Letter-sized paper sheets (US Letter 8.5 × 11) */
@@ -183,9 +186,12 @@ main {
     overflow-x: visible;
 }
 
-/* Posts */
+/* Posts: letter-sized at minimum, grow with content */
 .article {
     margin: 36px auto 110px;
+    aspect-ratio: auto;
+    min-height: calc(var(--page-width) * 11 / 8.5);
+    overflow: visible;
 }
 
 .article-header {
@@ -197,7 +203,7 @@ main {
 .article-header h1 {
     margin: 12px 0 12px;
     font-family: var(--serif);
-    font-size: clamp(22px, 3.4vw, 28px);
+    font-size: clamp(1.375rem, 3.4vw, 1.75rem);
     font-weight: 400;
     line-height: 1.2;
 }
@@ -206,14 +212,14 @@ main {
     margin: 0 auto;
     color: var(--paper-muted);
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-style: italic;
 }
 
 .article-body {
     margin: auto;
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.62;
     text-rendering: optimizeLegibility;
 }
@@ -221,8 +227,8 @@ main {
 .article-body p { margin: 0 0 1.2em; text-indent: 0; }
 .article-body h2,
 .article-body h3 { font-family: var(--serif); font-weight: 400; }
-.article-body h2 { margin: 2.2em 0 1em; font-size: 20px; }
-.article-body h3 { margin: 1.8em 0 .8em; font-size: 17px; }
+.article-body h2 { margin: 2.2em 0 1em; font-size: 1.25rem; }
+.article-body h3 { margin: 1.8em 0 .8em; font-size: 1.0625rem; }
 .article-body blockquote { margin: 2.5em 0; padding-left: 22px; border-left: 1px solid var(--ink); color: var(--paper-muted); font-style: italic; }
 .article-body img { max-width: 100%; height: auto; }
 .article-body a { text-decoration: underline; text-underline-offset: 3px; }
@@ -232,8 +238,8 @@ main {
     :root { --page-gutter: 16px; }
     .site-header, main { width: calc(100% - 2 * var(--page-gutter)); }
     .site-header { padding: 20px 0 17px; }
-    .logo { font-size: 23px; }
-    .directory { padding: 65px var(--banner-indent) 100px; font-size: 13px; }
+    .logo { font-size: 1.4375rem; }
+    .directory { padding: 65px var(--banner-indent) 100px; font-size: 0.8125rem; }
     .file-row time { display: none; }
     .header-path {
         overflow-x: auto;
@@ -245,8 +251,8 @@ main {
         aspect-ratio: auto;
         padding: 30px 28px 48px;
     }
-    .article { margin: 24px -6px 70px; }
+    .article { margin: 24px -6px 70px; min-height: 0; }
     .article-header { margin: 0 auto 2em; }
-    .article-header h1 { font-size: 24px; }
-    .article-body { font-size: 15px; }
+    .article-header h1 { font-size: 1.5rem; }
+    .article-body { font-size: 0.9375rem; }
 }

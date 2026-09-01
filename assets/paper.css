@@ -4,15 +4,15 @@
 
 .paper-main .ltx_page_main {
     margin: 0 auto;
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.62;
     aspect-ratio: auto;
-    min-height: 11in;
+    min-height: calc(var(--page-width) * 11 / 8.5);
 }
 
 .paper-main .ltx_title_document {
     font-family: var(--serif);
-    font-size: clamp(20px, 3.2vw, 26px);
+    font-size: clamp(1.25rem, 3.2vw, 1.625rem);
     font-weight: 400;
     line-height: 1.25;
     text-align: center;
@@ -23,27 +23,27 @@
     margin: 0 auto 2.5em;
     font-style: italic;
     color: var(--paper-muted);
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.62;
 }
 
 .paper-main .ltx_title_section {
     font-family: var(--serif);
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 400;
     margin: 2.2em 0 1em;
 }
 
 .paper-main .ltx_title_subsection {
     font-family: var(--serif);
-    font-size: 17px;
+    font-size: 1.0625rem;
     font-weight: 400;
     margin: 1.8em 0 0.8em;
 }
 
 .paper-main .ltx_title_subsubsection {
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 400;
     font-style: italic;
     margin: 1.5em 0 0.7em;
@@ -52,7 +52,7 @@
 .paper-main .ltx_title_paragraph,
 .paper-main .ltx_title_subparagraph {
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 400;
     font-style: italic;
     display: inline;
@@ -61,7 +61,7 @@
 
 .paper-main .ltx_title_part {
     font-family: var(--serif);
-    font-size: clamp(20px, 3.2vw, 24px);
+    font-size: clamp(1.25rem, 3.2vw, 1.5rem);
     font-weight: 400;
     text-align: center;
     margin: 2.8em 0 1.4em;
@@ -70,7 +70,7 @@
 .paper-main .ltx_title_appendix,
 .paper-main .ltx_title_bibliography {
     font-family: var(--serif);
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 400;
     margin: 2.2em 0 1em;
 }
@@ -91,12 +91,12 @@
 
 .paper-main .ltx_titlepage .ltx_p:first-child {
     color: var(--paper-muted);
-    font-size: 15px;
+    font-size: 0.9375rem;
 }
 
 .paper-main .ltx_titlepage .ltx_p:last-child {
     font-family: var(--serif);
-    font-size: clamp(20px, 3.2vw, 26px);
+    font-size: clamp(1.25rem, 3.2vw, 1.625rem);
     font-weight: 400;
     line-height: 1.25;
 }
@@ -226,7 +226,7 @@
     border: 1px solid var(--ink);
     background: #f8f7f2;
     font-family: var(--serif);
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     line-height: 1.45;
     overflow: visible;
 }
@@ -237,7 +237,7 @@
     margin: 0 0 0.7em;
     padding-bottom: 0.45em;
     border-bottom: 1px solid var(--ink);
-    font-size: 13.5px;
+    font-size: 0.84375rem;
 }
 
 .paper-main .algorithm-tag {
@@ -262,7 +262,7 @@
 .paper-main .algorithm-lines li::before {
     content: attr(data-n) ":";
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--paper-muted);
 }
 
@@ -351,7 +351,7 @@
 
 .paper-main .ltx_title_contents {
     font-family: var(--serif);
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 400;
     margin: 0 0 1.1em;
 }
@@ -411,7 +411,7 @@
     display: table;
     width: 100%;
     max-width: 100%;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     border-collapse: collapse;
 }
 
@@ -423,7 +423,7 @@
 
 .paper-main .ltx_caption {
     max-width: 100%;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     line-height: 1.45;
 }
 

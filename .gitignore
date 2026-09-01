@@ -3,3 +3,5 @@ _site/
 vendor/
 Gemfile.lock
 _tex/
+favourite-ratio-server/data/
+favourite-ratio-server/.venv/

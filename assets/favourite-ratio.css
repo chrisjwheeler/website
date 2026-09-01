@@ -5,43 +5,50 @@
 .ratio-wrap {
     margin: 0 auto;
     aspect-ratio: auto;
-    min-height: 11in;
+    min-height: calc(var(--page-width) * 11 / 8.5);
 }
 
 .ratio-header {
     margin: 0 auto 2.5em;
-    text-align: center;
 }
 
 .ratio-eyebrow {
     color: var(--paper-muted);
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: lowercase;
     margin: 0 0 22px;
+    text-align: center;
 }
 
 .ratio-header h1 {
-    margin: 0 0 14px;
+    margin: 0 0 1.4em;
     font-family: var(--serif);
-    font-size: clamp(22px, 3.4vw, 28px);
+    font-size: clamp(1.375rem, 3.4vw, 1.75rem);
     font-weight: 400;
-    line-height: 1.22;
+    line-height: 1.2;
+    text-align: center;
 }
 
 .ratio-lede {
-    margin: 0 auto;
-    color: var(--paper-muted);
+    margin: 0 0 1.2em;
+    color: var(--ink);
     font-family: var(--serif);
-    font-size: 15px;
-    font-style: italic;
+    font-size: 0.9375rem;
+    font-style: normal;
     line-height: 1.62;
+    text-align: left;
+    text-rendering: optimizeLegibility;
+}
+
+.ratio-lede:last-child {
+    margin-bottom: 0;
 }
 
 .ratio-readout {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     letter-spacing: 0.04em;
     color: var(--paper-muted);
     text-align: center;
@@ -70,7 +77,7 @@
     align-items: center;
     justify-content: center;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 0.12em;
     color: var(--paper-muted);
     background:
@@ -110,17 +117,32 @@
 
 .tag {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     color: var(--paper-muted);
 }
 
 .ratio-hint {
-    text-align: center;
+    text-align: left;
     font-family: var(--serif);
-    font-size: 15px;
-    color: var(--paper-muted);
+    font-size: 0.9375rem;
+    font-style: normal;
+    line-height: 1.62;
+    color: var(--ink);
     margin: 16px 0 0;
+}
+
+.ratio-hint kbd {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-style: normal;
+    line-height: 1;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 3px 7px 4px;
+    margin: 0 2px;
+    min-width: 1.6em;
 }
 
 .ratio-controls {
@@ -132,7 +154,7 @@
 
 .ratio-ctl {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.06em;
     text-transform: lowercase;
     background: transparent;
@@ -168,14 +190,14 @@
 
 .results-head h2 {
     font-family: var(--serif);
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 400;
     margin: 0;
 }
 
 .results-head span {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--paper-muted);
 }
 
@@ -190,19 +212,19 @@
 
 .row .rank {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--paper-muted);
 }
 
 .row .label {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 .row .label small {
     display: block;
     color: var(--paper-muted);
-    font-size: 10px;
+    font-size: 0.625rem;
     margin-top: 1px;
 }
 
@@ -221,7 +243,7 @@
 
 .row .val {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 0.6875rem;
     text-align: right;
     color: var(--paper-muted);
 }
@@ -240,7 +262,7 @@
 
 .ratio-verdict {
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.62;
     margin: 18px 0 0;
     padding: 14px 16px;
@@ -251,7 +273,7 @@
 .ratio-method {
     margin-top: 26px;
     font-family: var(--serif);
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.62;
     color: var(--paper-muted);
 }
@@ -259,7 +281,7 @@
 .ratio-method summary {
     cursor: pointer;
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: 0.75rem;
     letter-spacing: 0.04em;
     text-transform: lowercase;
     color: var(--ink);

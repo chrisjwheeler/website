@@ -2,7 +2,7 @@
 
   <header class="ratio-header">
     <p class="ratio-eyebrow">Perceptual Ratio Study · Bradley–Terry</p>
-    <h1>Is the golden ratio actually the most pleasing division?</h1>
+    <h1>What is the most pleasing division?</h1>
     <p class="ratio-lede">Every trial shows two rectangles, each bisected at a different point. Pick whichever split you find more pleasing — no numbers, no labels, just the shape. After enough trials, your choices get fit to a Bradley–Terry model to rank the candidate ratios, including φ⁻¹ ≈ 0.618, against each other.</p>
   </header>
 
@@ -21,7 +21,10 @@
       </button>
     </div>
 
-    <p class="ratio-hint">Click the one that looks more pleasing to you.</p>
+    <p class="ratio-hint">
+      Choose the more pleasing split —
+      click it, or press <kbd>←</kbd> or <kbd>→</kbd>.
+    </p>
   </div>
 
   <div class="ratio-controls">
@@ -61,6 +64,8 @@
   ];
   const n = RATIOS.length;
   const STORE_KEY = "bisection-bt-history-v1";
+  const SESSION_KEY = "bisection-bt-session-v1";
+  const COMPARE_API = "https://chris.osmarks.net/comparisons";
 
   async function loadHistory(){
     try {
@@ -73,6 +78,39 @@
   }
   async function clearHistory(){
     try { localStorage.removeItem(STORE_KEY); } catch(e){}
+    try { localStorage.removeItem(SESSION_KEY); } catch(e){}
+  }
+
+  function getSessionId(){
+    try {
+      let id = localStorage.getItem(SESSION_KEY);
+      if (!id){
+        id = (crypto.randomUUID && crypto.randomUUID()) || (Date.now() + "-" + Math.random().toString(36).slice(2, 10));
+        localStorage.setItem(SESSION_KEY, id);
+      }
+      return id;
+    } catch(e){ return null; }
+  }
+
+  function sendComparison(record){
+    const payload = {
+      i: record.i,
+      j: record.j,
+      winner: record.winner,
+      loser: record.loser,
+      winner_ratio: RATIOS[record.winner].r,
+      loser_ratio: RATIOS[record.loser].r,
+      session: getSessionId()
+    };
+    try {
+      fetch(COMPARE_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        keepalive: true,
+        mode: "cors"
+      }).catch(function(){});
+    } catch(e){}
   }
 
   let wins = Array.from({length:n}, () => Array(n).fill(0));
@@ -157,6 +195,7 @@
     wins[winner][loser]++;
     shown[current.i][current.j]++; shown[current.j][current.i]++;
     history.push({ i: current.i, j: current.j, winner, loser });
+    sendComparison({ i: current.i, j: current.j, winner, loser });
     await saveHistory(history);
     newTrial();
   }
@@ -232,6 +271,18 @@
 
   document.getElementById('panelA').addEventListener('click', () => choose('A'));
   document.getElementById('panelB').addEventListener('click', () => choose('B'));
+
+  document.addEventListener('keydown', (event) => {
+    if (document.getElementById('trial-view').hidden) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.repeat) return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      choose('A');
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      choose('B');
+    }
+  });
 
   document.getElementById('showResults').addEventListener('click', () => {
     const trialView = document.getElementById('trial-view');
