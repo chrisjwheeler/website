@@ -38,6 +38,11 @@
 
     <div class="header-path">
         <nav aria-label="Breadcrumb">
+            {% if page.section == "random" %}
+            <a href="{{ '/random/' | relative_url }}">random</a>
+            <span aria-hidden="true">/</span>
+            <span>{{ page.short_title | default: page.title | downcase }}</span>
+            {% else %}
             <a href="{{ '/work/' | relative_url }}">work</a>
             <span aria-hidden="true">/</span>
             {% if page.parent %}
@@ -45,6 +50,7 @@
             <span aria-hidden="true">/</span>
             {% endif %}
             <span>{{ page.short_title | default: page.title | downcase }}</span>
+            {% endif %}
         </nav>
     </div>
 </header>

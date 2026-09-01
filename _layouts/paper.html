@@ -110,6 +110,10 @@
             <span aria-hidden="true">/</span>
             {% endif %}
             <span>{{ page.short_title | default: page.title | downcase }}</span>
+            {% if page.toc %}
+            <span aria-hidden="true">/</span>
+            <a href="#contents">contents</a>
+            {% endif %}
         </nav>
     </div>
 </header>

@@ -45,6 +45,12 @@
             {% endif %}
             <span>{{ page.title | downcase }}</span>
             {% endunless %}
+            {% elsif page.section == "random" %}
+            <a href="{{ '/random/' | relative_url }}">random</a>
+            {% unless page.url == "/random/" %}
+            <span aria-hidden="true">/</span>
+            <span>{{ page.title | downcase }}</span>
+            {% endunless %}
             {% else %}
             <a href="{{ '/' | relative_url }}">writing</a>
 
