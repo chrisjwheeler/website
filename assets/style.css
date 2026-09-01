@@ -31,7 +31,8 @@
     --ink: #17191b;
     --paper-muted: #656565;
     --max-width: 900px;
-    --page-gutter: 72px;
+    --page-gutter: 24px;
+    --banner-indent: 5%;
     --page-width: 8.5in;
     --page-pad-y: 0.85in;
     --page-pad-x: 1.45in;
@@ -100,7 +101,7 @@ main {
 /* Home directory */
 .directory {
     width: 100%;
-    padding: 90px 0 150px;
+    padding: 90px var(--banner-indent) 150px;
     font-family: var(--mono);
     font-size: 15px;
 }
@@ -228,10 +229,11 @@ main {
 .article-body hr { width: 60px; margin: 3.5em auto; border: 0; border-top: 1px solid var(--ink); }
 
 @media (max-width: 600px) {
+    :root { --page-gutter: 16px; }
     .site-header, main { width: calc(100% - 2 * var(--page-gutter)); }
     .site-header { padding: 20px 0 17px; }
     .logo { font-size: 23px; }
-    .directory { padding: 65px 0 100px; font-size: 13px; }
+    .directory { padding: 65px var(--banner-indent) 100px; font-size: 13px; }
     .file-row time { display: none; }
     .header-path {
         overflow-x: auto;
