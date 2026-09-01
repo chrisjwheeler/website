@@ -417,6 +417,7 @@
           + ' · ' + coordLabel(vals);
         btn.setAttribute('aria-label', btn.title);
         btn.addEventListener('click', function(){ chooseCell(row, col); });
+        btn.addEventListener('pointerdown', function(){ setHover(css); });
         btn.addEventListener('mouseenter', function(){ setHover(css); });
         grid.appendChild(btn);
       }
@@ -478,6 +479,7 @@
     renderBreadcrumbs();
     renderSlice();
     renderPreview();
+    saveProgress();
   }
 
   function hslToRgb(h, s, l){
@@ -518,6 +520,61 @@
     return '#' + hex(rgb.r) + hex(rgb.g) + hex(rgb.b);
   }
 
+  const STORE_KEY = 'twohalves-colour-picker';
+
+  function saveProgress(){
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        space: space,
+        axis: axis,
+        moveSize: moveSize,
+        state: state,
+        origin: origin,
+        steps: steps
+      }));
+    } catch (e) {}
+  }
+
+  function isNum(x){
+    return typeof x === 'number' && isFinite(x);
+  }
+
+  function validState(st, sp){
+    if (!st || typeof st !== 'object') return false;
+    return SPACES[sp].axes.every(function(k){ return isNum(st[k]); });
+  }
+
+  function loadProgress(){
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data.space !== 'hsl' && data.space !== 'rgb') return;
+      if (data.moveSize !== 1 && data.moveSize !== 2 && data.moveSize !== 3) return;
+      const axes = SPACES[data.space].axes;
+      if (axes.indexOf(data.axis) === -1) return;
+      if (!validState(data.state, data.space) || !validState(data.origin, data.space)) return;
+      if (!Array.isArray(data.steps)) return;
+      const loaded = [];
+      for (let i = 0; i < data.steps.length && i < 200; i++){
+        const s = data.steps[i];
+        if (!s || !validState(s.state, data.space)) return;
+        loaded.push({
+          state: copyFrom(s.state),
+          axis: axes.indexOf(s.axis) === -1 ? axes[0] : s.axis,
+          css: typeof s.css === 'string' ? s.css : colourCss(s.state, data.space),
+          mode: 'pan'
+        });
+      }
+      space = data.space;
+      axis = data.axis;
+      moveSize = data.moveSize;
+      state = copyFrom(data.state);
+      origin = copyFrom(data.origin);
+      steps = loaded;
+    } catch (e) {}
+  }
+
   function pickFavourite(){
     const css = rgbToHex(currentRgb());
     try { localStorage.setItem('twohalves-favourite-bg', css); } catch (e) {}
@@ -526,6 +583,7 @@
 
   document.getElementById('restartBtn').addEventListener('click', restart);
   document.getElementById('favouriteBtn').addEventListener('click', pickFavourite);
+  loadProgress();
   render();
 })();
 </script>
