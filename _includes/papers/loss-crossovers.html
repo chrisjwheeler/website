@@ -272,19 +272,7 @@ t}^{\mathrm{Den}}(\mathbf{x}_{\theta})\right]+(1-t_{n})\cdot\operatorname*{%
 <p class="ltx_p"><span class="ltx_text ltx_font_italic">Our own analogue to <a href="#Thmtheorem1" title="Theorem 1. â€£ 3 The Phase Transition from Memorisation to Generalization â€£ Loss Crossovers and Phase Transitions Under Ambient Training in Diffusion Models" class="ltx_ref"><span class="ltx_text ltx_ref_tag">theorem 1</span></a>.
 Under the assumptions of <a href="#Thmtheorem1" title="Theorem 1. â€£ 3 The Phase Transition from Memorisation to Generalization â€£ Loss Crossovers and Phase Transitions Under Ambient Training in Diffusion Models" class="ltx_ref"><span class="ltx_text ltx_ref_tag">theorem 1</span></a> we have that</span></p>
 <div class="ltx_math_display prop-eq">
-\[
-\begin{aligned}
-&\mathbb{E}_{(x_{0}^{(i)})_{i=1}^{N}}\bigl[\mathcal{L}_{t_{n}}^{\mathrm{Alg1}}(\mathbf{x}_{\mathrm{pmem},M},\lambda_{w})
--\mathcal{L}_{t_{n}}^{\mathrm{Alg1}}(\mathbf{x}_{\mathrm{gen}},\lambda_{w})\bigr] \\
-&\approx t_{n}\,\mathbb{E}_{t<t_{n}}\Bigl[\lambda(t)\Bigl(C\Bigl(1-\tfrac{M}{N}\Bigr)d\sigma_{\star}^{2}
--\frac{d\sigma_{\star}^{2}}{\psi_{t}\sigma_{\star}^{2}+1}\Bigr)\Bigr] \\
-&\quad+(1-t_{n})\,\mathbb{E}_{(x_{0}^{(i)})_{i=1}^{N}}\mathbb{E}_{t>t_{n}}\mathbb{E}_{x_{t}\mid x_{t_{n}}} \\
-&\qquad\Biggl[\Biggl\|\frac{\sigma_{t}^{2}-\sigma_{t_{n}}^{2}}{\sigma_{t}^{2}\sqrt{1-\sigma_{t_{n}}^{2}}}\mathbf{x}_{\mathrm{pmem},M}
--\mathbf{x}_{\mathrm{mem}}\Biggr\|^{2}
--\Biggl\|\frac{\sigma_{t}^{2}-\sigma_{t_{n}}^{2}}{\sigma_{t}^{2}\sqrt{1-\sigma_{t_{n}}^{2}}}\mathbf{x}_{\mathrm{gen}}
--\mathbf{x}_{\mathrm{mem}}\Biggr\|^{2}\Biggr]
-\end{aligned}
-\]
+<math class="ltx_Math" display="block" alttext="\begin{aligned}&amp;\mathbb{E}_{(x_{0}^{(i)})_{i=1}^{N}}\bigl[\mathcal{L}_{t_{n}}^{\mathrm{Alg1}}(\mathbf{x}_{\mathrm{pmem},M},\lambda_{w})-\mathcal{L}_{t_{n}}^{\mathrm{Alg1}}(\mathbf{x}_{\mathrm{gen}},\lambda_{w})\bigr] \\ &amp;\approx t_{n}\,\mathbb{E}_{t\lt t_{n}}\Bigl[\lambda(t)\Bigl(C\Bigl(1-\tfrac{M}{N}\Bigr)d\sigma_{\star}^{2}-\frac{d\sigma_{\star}^{2}}{\psi_{t}\sigma_{\star}^{2}+1}\Bigr)\Bigr] \\ &amp;\quad+(1-t_{n})\,\mathbb{E}_{(x_{0}^{(i)})_{i=1}^{N}}\mathbb{E}_{t\gt t_{n}}\mathbb{E}_{x_{t}\mid x_{t_{n}}} \\ &amp;\qquad\Biggl[\Biggl\|\frac{\sigma_{t}^{2}-\sigma_{t_{n}}^{2}}{\sigma_{t}^{2}\sqrt{1-\sigma_{t_{n}}^{2}}}\mathbf{x}_{\mathrm{pmem},M}-\mathbf{x}_{\mathrm{mem}}\Biggr\|^{2}-\Biggl\|\frac{\sigma_{t}^{2}-\sigma_{t_{n}}^{2}}{\sigma_{t}^{2}\sqrt{1-\sigma_{t_{n}}^{2}}}\mathbf{x}_{\mathrm{gen}}-\mathbf{x}_{\mathrm{mem}}\Biggr\|^{2}\Biggr]\end{aligned}"></math>
 </div>
 <p class="ltx_p"><span class="ltx_text ltx_font_italic">where the inputs to <math id="Thmproposition1.p1.m1" class="ltx_Math" alttext="\mathbf{x}_{\text{mem}}" display="inline"><msub><mi>ð±</mi><mtext class="ltx_mathvariant_italic">mem</mtext></msub></math> and <math id="Thmproposition1.p1.m2" class="ltx_Math" alttext="\mathbf{x}_{\text{pmem, M}}" display="inline"><msub><mi>ð±</mi><mtext class="ltx_mathvariant_italic">pmem, M</mtext></msub></math> are removed for brevity. This result follows from applying the orthogonality principle to <a href="#S4.E8" title="Equation 8 â€£ 4 An Algorithm to Reduce Memorisation â€£ Loss Crossovers and Phase Transitions Under Ambient Training in Diffusion Models" class="ltx_ref"><span class="ltx_text ltx_ref_tag">8</span></a>, and then applying the approximation in <a href="#Thmtheorem1" title="Theorem 1. â€£ 3 The Phase Transition from Memorisation to Generalization â€£ Loss Crossovers and Phase Transitions Under Ambient Training in Diffusion Models" class="ltx_ref"><span class="ltx_text ltx_ref_tag">theorem 1</span></a>.</span></p>
 </div>
