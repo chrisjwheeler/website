@@ -1,0 +1,531 @@
+<div class="cube-wrap">
+
+  <header class="cube-header">
+    <div class="cube-eyebrow">Perceptual Colour Study · Five-way Search</div>
+    <h1>Ultimate Colour Picker.</h1>
+    <p class="cube-lede">Choose a coordinate system, invariant dimension, step size, and then click your favourite colour on the grid.</p>
+  </header>
+
+  <div class="cube-toolbar">
+    <div class="cube-axes" role="group" aria-label="Fixed axis">
+      <span class="cube-mag-label">hold still</span>
+      <div class="cube-mag-opts" id="axisOpts"></div>
+    </div>
+    <div class="cube-mag" role="group" aria-label="Move size">
+      <span class="cube-mag-label">move size</span>
+      <div class="cube-mag-opts" id="magOpts"></div>
+    </div>
+    <div class="cube-space" role="group" aria-label="Colour space">
+      <span class="cube-mag-label">colour space</span>
+      <div class="cube-mag-opts" id="spaceOpts"></div>
+    </div>
+  </div>
+
+  <div class="cube-layout">
+    <div class="cube-search">
+      <div class="cube-slice" id="slice"></div>
+    </div>
+
+    <div class="cube-preview">
+      <div class="cube-swatch is-empty" id="previewSquare">
+        <div class="cube-swatch-half" id="previewLast"></div>
+        <div class="cube-swatch-half" id="previewHover"></div>
+      </div>
+      <div class="cube-preview-title" id="previewLabel">last colour</div>
+    </div>
+  </div>
+
+  <div class="cube-crumbs" id="breadcrumbs"></div>
+
+  <div class="cube-controls">
+    <button type="button" class="cube-ctl" id="restartBtn">Restart</button>
+    <button type="button" class="cube-ctl" id="favouriteBtn">That's my favourite</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const N = 5;
+  const MOVE_MIN = 1;
+  const MOVE_MAX = 3;
+  const MOVE_DEFAULT = 3;
+  const SPACES = {
+    hsl: {
+      axes: ['h', 's', 'l'],
+      names: { h: 'hue', s: 'saturation', l: 'lightness' },
+      units: { h: '°', s: '%', l: '%' },
+      letters: { h: 'H', s: 'S', l: 'L' },
+      max: { h: 360, s: 100, l: 100 },
+      circular: { h: true },
+      span: { h: 'dh', s: 'ds', l: 'dl' },
+      start: { h: 180, s: 50, l: 50, dh: 360, ds: 100, dl: 100 }
+    },
+    rgb: {
+      axes: ['r', 'g', 'b'],
+      names: { r: 'red', g: 'green', b: 'blue' },
+      units: { r: '', g: '', b: '' },
+      letters: { r: 'R', g: 'G', b: 'B' },
+      max: { r: 255, g: 255, b: 255 },
+      circular: {},
+      span: { r: 'dr', g: 'dg', b: 'db' },
+      start: { r: 128, g: 128, b: 128, dr: 255, dg: 255, db: 255 }
+    }
+  };
+
+  let space = 'rgb';
+  let axis = 'b';
+  let moveSize = MOVE_DEFAULT;
+  let state = Object.assign({}, SPACES.rgb.start);
+  let origin = copyFrom(state);
+  let steps = [];
+  let hoverCss = '';
+
+  function cfg(){ return SPACES[space]; }
+  function clamp(x, a, b){ return Math.max(a, Math.min(b, x)); }
+  function wrapHue(h){ return ((h % 360) + 360) % 360; }
+
+  function copyFrom(src){
+    const out = {};
+    Object.keys(src).forEach(function(k){ out[k] = src[k]; });
+    return out;
+  }
+
+  function copyState(){ return copyFrom(state); }
+
+  function colourCss(vals, sp){
+    sp = sp || space;
+    if (sp === 'hsl'){
+      return 'hsl(' + wrapHue(vals.h).toFixed(1) + ', ' + vals.s.toFixed(1) + '%, ' + vals.l.toFixed(1) + '%)';
+    }
+    return 'rgb(' + Math.round(vals.r) + ', ' + Math.round(vals.g) + ', ' + Math.round(vals.b) + ')';
+  }
+
+  function rgbOfState(st, sp){
+    if (sp === 'rgb') return { r: st.r, g: st.g, b: st.b };
+    return hslToRgb(st.h, st.s, st.l);
+  }
+
+  function stateFromRgb(rgb, sp){
+    if (sp === 'rgb'){
+      return Object.assign({}, SPACES.rgb.start, { r: rgb.r, g: rgb.g, b: rgb.b });
+    }
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    return Object.assign({}, SPACES.hsl.start, { h: hsl.h, s: hsl.s, l: hsl.l });
+  }
+
+  function currentRgb(){
+    if (space === 'rgb'){
+      return { r: state.r, g: state.g, b: state.b };
+    }
+    return hslToRgb(state.h, state.s, state.l);
+  }
+
+  function currentHsl(){
+    if (space === 'hsl'){
+      return { h: wrapHue(state.h), s: state.s, l: state.l };
+    }
+    return rgbToHsl(state.r, state.g, state.b);
+  }
+
+  function stepSize(key){
+    const c = cfg();
+    const coarse = c.start[c.span[key]] / N;
+    return coarse / Math.pow(N, MOVE_MAX - moveSize);
+  }
+
+  function axisValues(key){
+    const c = cfg();
+    const center = state[key];
+    const step = stepSize(key);
+    const circular = !!c.circular[key];
+    const max = c.max[key];
+    const vals = [];
+    for (let i = -2; i <= 2; i++){
+      const v = center + i * step;
+      vals.push(circular ? wrapHue(v) : clamp(v, 0, max));
+    }
+    return vals;
+  }
+
+  function signedDiff(from, to, key){
+    if (cfg().circular[key]){
+      let d = wrapHue(from) - wrapHue(to);
+      if (d > 180) d -= 360;
+      if (d < -180) d += 360;
+      return d;
+    }
+    return from - to;
+  }
+
+  function sameColour(a, b){
+    const c = cfg();
+    return c.axes.every(function(k){
+      return Math.abs(signedDiff(a[k], b[k], k)) <= Math.max(stepSize(k) * 0.2, 0.05);
+    });
+  }
+
+  function lastColourAgo(){
+    const ago = {};
+    if (!steps.length) return ago;
+    const prev = [{ st: origin, n: steps.length }];
+    for (let i = 0; i < steps.length - 1; i++){
+      prev.push({ st: steps[i].state, n: steps.length - i - 1 });
+    }
+    const c = cfg();
+    const varying = c.axes.filter(function(a){ return a !== axis; });
+    const xKey = varying[0];
+    const yKey = varying[1];
+    const xVals = axisValues(xKey);
+    const yVals = axisValues(yKey);
+    prev.forEach(function(item){
+      for (let row = 0; row < N; row++){
+        for (let col = 0; col < N; col++){
+          if (row === 2 && col === 2) continue;
+          const vals = copyState();
+          vals[xKey] = xVals[col];
+          vals[yKey] = yVals[4 - row];
+          if (sameColour(vals, item.st)){
+            const key = row + ',' + col;
+            if (ago[key] == null || item.n < ago[key]) ago[key] = item.n;
+          }
+        }
+      }
+    });
+    return ago;
+  }
+
+  function restore(){
+    if (!steps.length){
+      state = copyFrom(origin);
+      return;
+    }
+    state = copyFrom(steps[steps.length - 1].state);
+  }
+
+  function record(){
+    steps.push({
+      state: copyState(),
+      axis: axis,
+      css: colourCss(state),
+      mode: 'pan'
+    });
+  }
+
+  function chooseCell(row, col){
+    const c = cfg();
+    const varying = c.axes.filter(function(a){ return a !== axis; });
+    const xVals = axisValues(varying[0]);
+    const yVals = axisValues(varying[1]);
+    state[varying[0]] = xVals[col];
+    state[varying[1]] = yVals[4 - row];
+    record();
+    hoverCss = '';
+    render();
+  }
+
+  function setAxis(a){
+    axis = a;
+    render();
+  }
+
+  function setSpace(next){
+    if (next === space) return;
+    const from = space;
+    const axisIdx = SPACES[from].axes.indexOf(axis);
+    origin = stateFromRgb(rgbOfState(origin, from), next);
+    steps = steps.map(function(s){
+      const st = stateFromRgb(rgbOfState(s.state, from), next);
+      const oldIdx = SPACES[from].axes.indexOf(s.axis);
+      return {
+        state: st,
+        axis: SPACES[next].axes[oldIdx] || SPACES[next].axes[0],
+        css: colourCss(st, next),
+        mode: s.mode
+      };
+    });
+    space = next;
+    axis = SPACES[next].axes[axisIdx] || SPACES[next].axes[0];
+    restore();
+    render();
+  }
+
+  function setMoveSize(n){
+    moveSize = n;
+    render();
+  }
+
+  function restart(){
+    steps = [];
+    hoverCss = '';
+    state = Object.assign({}, cfg().start);
+    origin = copyState();
+    render();
+  }
+
+  function goBackTo(n){
+    steps = steps.slice(0, n);
+    restore();
+    hoverCss = '';
+    render();
+  }
+
+  function renderToggle(el, items, current, onPick, btnClass){
+    el.innerHTML = '';
+    items.forEach(function(item){
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      const on = item.value === current;
+      btn.className = (btnClass || 'cube-mag-btn') + (on ? ' is-on' : '');
+      btn.textContent = item.label;
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (item.title) btn.title = item.title;
+      btn.addEventListener('click', function(){ onPick(item.value); });
+      el.appendChild(btn);
+    });
+  }
+
+  function renderMag(){
+    const items = [];
+    for (let n = MOVE_MAX; n >= MOVE_MIN; n--){
+      items.push({
+        value: n,
+        label: String(n),
+        title: n === MOVE_MAX
+          ? 'Coarse: each square is a fifth of the cube'
+          : n === MOVE_MIN
+            ? 'Fine: each square is a small step'
+            : 'Medium step size'
+      });
+    }
+    renderToggle(document.getElementById('magOpts'), items, moveSize, setMoveSize);
+  }
+
+  function renderSpace(){
+    renderToggle(document.getElementById('spaceOpts'), [
+      { value: 'hsl', label: 'hsl' },
+      { value: 'rgb', label: 'rgb' }
+    ], space, setSpace);
+  }
+
+  function renderAxes(){
+    const c = cfg();
+    renderToggle(document.getElementById('axisOpts'), c.axes.map(function(a){
+      return { value: a, label: c.names[a] };
+    }), axis, setAxis, 'cube-axis');
+  }
+
+  function renderBreadcrumbs(){
+    const el = document.getElementById('breadcrumbs');
+    el.innerHTML = '';
+    const start = document.createElement('button');
+    start.type = 'button';
+    start.className = 'cube-crumb start';
+    start.textContent = '0';
+    start.title = 'Back to start';
+    start.addEventListener('click', function(){ goBackTo(0); });
+    el.appendChild(start);
+    steps.forEach(function(s, i){
+      const sep = document.createElement('span');
+      sep.className = 'cube-crumb-sep';
+      sep.textContent = '/';
+      el.appendChild(sep);
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'cube-crumb';
+      chip.style.background = s.css;
+      chip.title = 'Move ' + (i + 1);
+      chip.addEventListener('click', function(){ goBackTo(i + 1); });
+      el.appendChild(chip);
+    });
+  }
+
+  function tickLabel(key, value){
+    const c = cfg();
+    const shown = c.circular[key] ? wrapHue(value) : value;
+    const digits = stepSize(key) < 1.5 ? 1 : 0;
+    return shown.toFixed(digits) + c.units[key];
+  }
+
+  function coordLabel(vals){
+    const c = cfg();
+    return c.axes.map(function(k){
+      const v = c.circular[k] ? wrapHue(vals[k]) : vals[k];
+      return c.letters[k] + ' ' + v.toFixed(1) + c.units[k];
+    }).join(' · ');
+  }
+
+  function addMark(btn, kind, text){
+    const mark = document.createElement('span');
+    mark.className = 'cube-cell-mark cube-cell-' + kind;
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = text;
+    btn.appendChild(mark);
+  }
+
+  function renderSlice(){
+    const c = cfg();
+    const slice = document.getElementById('slice');
+    slice.innerHTML = '';
+    const varying = c.axes.filter(function(a){ return a !== axis; });
+    const xKey = varying[0];
+    const yKey = varying[1];
+    const xVals = axisValues(xKey);
+    const yVals = axisValues(yKey);
+    const lastAgo = lastColourAgo();
+
+    const yTitle = document.createElement('div');
+    yTitle.className = 'cube-y-title';
+    yTitle.textContent = c.names[yKey];
+    slice.appendChild(yTitle);
+
+    const plot = document.createElement('div');
+    plot.className = 'cube-plot';
+
+    const yTicks = document.createElement('div');
+    yTicks.className = 'cube-y-ticks';
+    for (let row = 0; row < N; row++){
+      const tick = document.createElement('span');
+      tick.textContent = tickLabel(yKey, yVals[4 - row]);
+      yTicks.appendChild(tick);
+    }
+    plot.appendChild(yTicks);
+
+    const grid = document.createElement('div');
+    grid.className = 'cube-grid';
+    grid.setAttribute('aria-label', '5 by 5 colour slice');
+    for (let row = 0; row < N; row++){
+      for (let col = 0; col < N; col++){
+        const vals = copyState();
+        vals[xKey] = xVals[col];
+        vals[yKey] = yVals[4 - row];
+        const unitX = col - 2;
+        const unitY = 2 - row;
+        const css = colourCss(vals);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cube-cell';
+        btn.style.background = css;
+        if (row === 2 && col === 2){
+          btn.classList.add('is-center');
+          addMark(btn, 'x', '×');
+        } else if (lastAgo[row + ',' + col]){
+          btn.classList.add('is-last');
+          addMark(btn, 'l', '-' + lastAgo[row + ',' + col]);
+        }
+        btn.title = c.names[xKey] + ' ' + unitX + ' · ' + c.names[yKey] + ' ' + unitY
+          + ' · ' + coordLabel(vals);
+        btn.setAttribute('aria-label', btn.title);
+        btn.addEventListener('click', function(){ chooseCell(row, col); });
+        btn.addEventListener('mouseenter', function(){ setHover(css); });
+        grid.appendChild(btn);
+      }
+    }
+    grid.addEventListener('mouseleave', function(){ setHover(''); });
+    plot.appendChild(grid);
+
+    const xTicks = document.createElement('div');
+    xTicks.className = 'cube-x-ticks';
+    for (let col = 0; col < N; col++){
+      const tick = document.createElement('span');
+      tick.textContent = tickLabel(xKey, xVals[col]);
+      xTicks.appendChild(tick);
+    }
+    plot.appendChild(xTicks);
+
+    const xTitle = document.createElement('div');
+    xTitle.className = 'cube-x-title';
+    xTitle.textContent = c.names[xKey];
+    plot.appendChild(xTitle);
+
+    slice.appendChild(plot);
+  }
+
+  function lastCss(){
+    return steps.length ? colourCss(state) : '';
+  }
+
+  function setHover(css){
+    hoverCss = css;
+    paintPreview();
+  }
+
+  function paintPreview(){
+    const box = document.getElementById('previewSquare');
+    const lastEl = document.getElementById('previewLast');
+    const hoverEl = document.getElementById('previewHover');
+    const chosen = lastCss();
+    const right = hoverCss || chosen;
+    lastEl.style.background = chosen;
+    hoverEl.style.background = right;
+    box.classList.toggle('is-empty', !chosen && !right);
+  }
+
+  function renderPreview(){
+    const label = document.getElementById('previewLabel');
+    paintPreview();
+    if (!steps.length){
+      label.textContent = 'last colour';
+      return;
+    }
+    label.textContent = 'last colour: ' + rgbToHex(currentRgb());
+  }
+
+  function render(){
+    renderMag();
+    renderSpace();
+    renderAxes();
+    renderBreadcrumbs();
+    renderSlice();
+    renderPreview();
+  }
+
+  function hslToRgb(h, s, l){
+    h = wrapHue(h); s /= 100; l /= 100;
+    const chroma = (1 - Math.abs(2 * l - 1)) * s;
+    const x = chroma * (1 - Math.abs((h / 60) % 2 - 1));
+    const m = l - chroma / 2;
+    let r = 0, g = 0, b = 0;
+    if (h < 60){ r = chroma; g = x; }
+    else if (h < 120){ r = x; g = chroma; }
+    else if (h < 180){ g = chroma; b = x; }
+    else if (h < 240){ g = x; b = chroma; }
+    else if (h < 300){ r = x; b = chroma; }
+    else { r = chroma; b = x; }
+    return { r: (r + m) * 255, g: (g + m) * 255, b: (b + m) * 255 };
+  }
+
+  function rgbToHsl(r, g, b){
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    const d = max - min;
+    let h = 0;
+    let s = 0;
+    if (d !== 0){
+      s = d / (1 - Math.abs(2 * l - 1));
+      if (max === r) h = 60 * (((g - b) / d) % 6);
+      else if (max === g) h = 60 * ((b - r) / d + 2);
+      else h = 60 * ((r - g) / d + 4);
+    }
+    if (h < 0) h += 360;
+    return { h: h, s: s * 100, l: l * 100 };
+  }
+
+  function rgbToHex(rgb){
+    function hex(n){ return Math.round(n).toString(16).padStart(2, '0'); }
+    return '#' + hex(rgb.r) + hex(rgb.g) + hex(rgb.b);
+  }
+
+  function pickFavourite(){
+    const css = rgbToHex(currentRgb());
+    try { localStorage.setItem('twohalves-favourite-bg', css); } catch (e) {}
+    document.documentElement.style.setProperty('--background', css);
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', restart);
+  document.getElementById('favouriteBtn').addEventListener('click', pickFavourite);
+  render();
+})();
+</script>

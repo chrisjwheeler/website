@@ -1,0 +1,10 @@
+<script>
+(function(){
+  try {
+    var c = localStorage.getItem('twohalves-favourite-bg');
+    if (c && /^#[0-9A-Fa-f]{6}$/.test(c)) {
+      document.documentElement.style.setProperty('--background', c);
+    }
+  } catch (e) {}
+})();
+</script>

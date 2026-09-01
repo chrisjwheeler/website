@@ -176,7 +176,8 @@ main {
 /* Letter-sized paper sheets (US Letter 8.5 × 11) */
 .article,
 .paper-main .ltx_page_main,
-.ratio-wrap {
+.ratio-wrap,
+.cube-wrap {
     width: min(var(--page-width), 100%);
     max-width: 100%;
     aspect-ratio: 8.5 / 11;
@@ -247,7 +248,8 @@ main {
     }
     .article,
     .paper-main .ltx_page_main,
-    .ratio-wrap {
+    .ratio-wrap,
+    .cube-wrap {
         aspect-ratio: auto;
         padding: 30px 28px 48px;
     }
