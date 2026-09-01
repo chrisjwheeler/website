@@ -3,51 +3,47 @@
 }
 
 .paper-main .ltx_page_main {
-    max-width: 780px;
     margin: 0 auto;
-    padding: 34px clamp(28px, 7vw, 72px) 62px;
-    background: var(--paper);
-    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.62;
 }
 
 .paper-main .ltx_title_document {
     font-family: var(--serif);
-    font-size: clamp(28px, 5vw, 38px);
+    font-size: clamp(20px, 3.2vw, 26px);
     font-weight: 400;
-    line-height: 1.15;
+    line-height: 1.25;
     text-align: center;
-    margin: 0 0 1.5em;
+    margin: 0 0 1.4em;
 }
 
 .paper-main .ltx_abstract {
-    max-width: 640px;
     margin: 0 auto 2.5em;
     font-style: italic;
     color: var(--paper-muted);
-}
-
-.paper-main .ltx_section,
-.paper-main .ltx_para,
-.paper-main .ltx_bibliography {
-    max-width: 590px;
-    margin-inline: auto;
-    font-family: var(--serif);
-    font-size: 18px;
-    line-height: 1.72;
+    font-size: 15px;
+    line-height: 1.62;
 }
 
 .paper-main .ltx_title_section {
     font-family: var(--serif);
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 400;
     margin: 2.2em 0 1em;
 }
 
 .paper-main .ltx_title_subsection {
     font-family: var(--serif);
-    font-size: 22px;
+    font-size: 17px;
     font-weight: 400;
     margin: 1.8em 0 0.8em;
+}
+
+.paper-main .ltx_p,
+.paper-main .ltx_para > .ltx_p:first-child,
+.paper-main .ltx_indent > .ltx_p:first-child,
+.paper-main .ltx_title_abstract + .ltx_p {
+    text-indent: 0 !important;
 }
 
 .paper-main img {
@@ -55,8 +51,189 @@
     height: auto;
 }
 
+.paper-main #S5.F1 {
+    margin: 1.6em auto;
+}
+
+.paper-main #S5.F1 img {
+    width: min(100%, 420px);
+    height: auto;
+}
+
+.paper-main .ltx_ref {
+    white-space: nowrap;
+}
+
+.paper-main .ltx_equationgroup,
+.paper-main table.ltx_equationgroup {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.paper-main .ltx_equationgroup tbody,
+.paper-main .ltx_equationgroup tr {
+    display: block;
+    width: 100%;
+}
+
+.paper-main .ltx_equationgroup td.ltx_eqn_cell,
+.paper-main .ltx_equationgroup td.ltx_td {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    text-align: left !important;
+    overflow: visible;
+}
+
+.paper-main .ltx_eqn_center_padleft,
+.paper-main .ltx_eqn_center_padright {
+    display: none;
+}
+
 .paper-main a {
     color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.paper-main .ltx_math_display {
+    margin: 0.6em 0;
+    text-align: center;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.paper-main .prop-eq {
+    font-size: 0.9em;
+}
+
+.paper-main .ltx_equation .ltx_math_display {
+    margin: 0;
+}
+
+.paper-main mjx-container {
+    font-size: 95%;
+    max-width: 100%;
+    overflow: visible !important;
+}
+
+.paper-main .ltx_equation,
+.paper-main .ltx_equationgroup,
+.paper-main .ltx_math_display,
+.paper-main .ltx_eqn_table,
+.paper-main .ltx_eqn_cell {
+    max-width: 100%;
+    overflow: visible !important;
+}
+
+.paper-main .ltx_eqn_table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.paper-main .ltx_eqn_center_padleft,
+.paper-main .ltx_eqn_center_padright {
+    width: 1%;
+    min-width: 0;
+}
+
+.paper-main .ltx_eqn_cell.ltx_align_center {
+    overflow: visible;
+    max-width: 100%;
+}
+
+.paper-main .ltx_eqn_eqno {
+    width: 2.2em;
+}
+
+/* Algorithm */
+.paper-main .algorithm,
+.paper-main .ltx_float_algorithm {
+    margin: 1.6em 0 2em;
+    padding: 0.7em 0.85em 0.9em;
+    border: 1px solid var(--ink);
+    background: #f8f7f2;
+    font-family: var(--serif);
+    font-size: 13.5px;
+    line-height: 1.45;
+    overflow: visible;
+}
+
+.paper-main .algorithm-caption,
+.paper-main .ltx_float_algorithm .ltx_caption {
+    display: block;
+    margin: 0 0 0.7em;
+    padding-bottom: 0.45em;
+    border-bottom: 1px solid var(--ink);
+    font-size: 13.5px;
+}
+
+.paper-main .algorithm-tag {
+    font-weight: 700;
+    margin-right: 0.4em;
+}
+
+.paper-main .algorithm-lines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.paper-main .algorithm-lines li {
+    display: grid;
+    grid-template-columns: 1.8em 1fr;
+    column-gap: 0.55em;
+    margin: 0.18em 0;
+    align-items: baseline;
+}
+
+.paper-main .algorithm-lines li::before {
+    content: attr(data-n) ":";
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--paper-muted);
+}
+
+.paper-main .algorithm-lines .indent-1 { padding-left: 1.1em; }
+.paper-main .algorithm-lines .indent-2 { padding-left: 2.2em; }
+.paper-main .algorithm-lines .indent-3 { padding-left: 3.3em; }
+.paper-main .algorithm-lines li > span {
+    min-width: 0;
+}
+
+.paper-main .algo-kw {
+    font-weight: 700;
+}
+
+.paper-main .algo-comment {
+    display: inline;
+    color: var(--paper-muted);
+    font-style: italic;
+}
+
+.paper-main .algo-comment::before {
+    content: " ▷ ";
+    font-style: normal;
+}
+
+.paper-main .ltx_listing {
+    margin: 0;
+    overflow-x: auto;
+}
+
+.paper-main .ltx_listingline {
+    white-space: normal;
+    min-height: 1.35em;
+}
+
+.paper-main .ltx_listingline > span[style*="float:right"] {
+    float: none !important;
+    display: block;
+    color: var(--paper-muted);
+    font-style: italic;
+    margin: 0.15em 0 0.35em 2.4em;
 }
 
 .paper-main .ltx_bibliography {
@@ -65,13 +242,39 @@
     border-top: 1px solid var(--paper-muted);
 }
 
+.paper-main .ltx_biblist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 .paper-main .ltx_bibitem {
-    margin-bottom: 1em;
+    margin: 0 0 1.15em;
+    padding: 0;
+}
+
+.paper-main .ltx_bibitem .ltx_tag {
+    display: block;
+    font-weight: 400;
+    margin: 0 0 0.15em;
+    width: auto;
+}
+
+.paper-main .ltx_bibblock {
+    display: block;
+}
+
+.paper-main .ltx_bibliography a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.paper-main .ltx_bibliography .ltx_ref {
+    white-space: normal;
 }
 
 @media (max-width: 600px) {
     .paper-main .ltx_page_main {
         margin-inline: -6px;
-        padding: 30px 23px 48px;
     }
 }

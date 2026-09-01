@@ -9,4 +9,6 @@ paper_assets: /work/mathematics/loss-crossovers/
 description: Loss crossovers and phase transitions under ambient training in diffusion models.
 ---
 
+{::nomarkdown}
 {% include papers/loss-crossovers.html %}
+{:/nomarkdown}

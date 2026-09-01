@@ -1,0 +1,269 @@
+<div class="ratio-wrap">
+
+  <header class="ratio-header">
+    <p class="ratio-eyebrow">Perceptual Ratio Study · Bradley–Terry</p>
+    <h1>Is the golden ratio actually the most pleasing division?</h1>
+    <p class="ratio-lede">Every trial shows two rectangles, each bisected at a different point. Pick whichever split you find more pleasing — no numbers, no labels, just the shape. After enough trials, your choices get fit to a Bradley–Terry model to rank the candidate ratios, including φ⁻¹ ≈ 0.618, against each other.</p>
+  </header>
+
+  <div id="trial-view">
+    <p class="ratio-readout">Trial <b id="trialNum">1</b> · <b id="pairsLogged">0</b> comparisons logged · <span id="coverage">0/36</span> pairs sampled at least once</p>
+
+    <div class="stage">
+      <button type="button" class="panel" id="panelA" aria-label="Choose the left specimen">
+        <div class="bar"><div class="seg segA" id="segA1"></div><div class="seg segB" id="segA2"></div></div>
+        <div class="tag">A</div>
+      </button>
+      <div class="versus">VS</div>
+      <button type="button" class="panel" id="panelB" aria-label="Choose the right specimen">
+        <div class="bar"><div class="seg segA" id="segB1"></div><div class="seg segB" id="segB2"></div></div>
+        <div class="tag">B</div>
+      </button>
+    </div>
+
+    <p class="ratio-hint">Click the one that looks more pleasing to you.</p>
+  </div>
+
+  <div class="ratio-controls">
+    <button type="button" class="ratio-ctl" id="showResults">View results</button>
+    <button type="button" class="ratio-ctl" id="resetBtn">Reset progress</button>
+  </div>
+
+  <section id="results" hidden>
+    <div class="results-head">
+      <h2>Ranked by estimated strength</h2>
+      <span id="resultsMeta"></span>
+    </div>
+    <div id="rows"></div>
+
+    <div class="ratio-verdict" id="verdict"></div>
+
+    <details class="ratio-method">
+      <summary>Method</summary>
+      <p>Each ratio is a player in a Bradley–Terry model: the chance that <em>i</em> beats <em>j</em> is p(i)/(p(i)+p(j)). Strengths are fit by Zermelo’s algorithm with a small symmetric prior so undersampled ratios stay finite. After a short warmup, pairs are chosen to maximise Fisher information — the closest matchups — so later trials concentrate on the hard calls. Stop when the ranking looks stable; extra trials mostly refine close calls rather than reshuffling the order.</p>
+    </details>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  const RATIOS = [
+    { r: 0.50, label: "0.500" },
+    { r: 0.55, label: "0.550" },
+    { r: 0.58, label: "0.580" },
+    { r: 0.618, label: "0.618", isPhi: true, note: "φ⁻¹" },
+    { r: 0.65, label: "0.650" },
+    { r: 0.70, label: "0.700" },
+    { r: 0.75, label: "0.750" },
+    { r: 0.80, label: "0.800" },
+    { r: 0.85, label: "0.850" },
+  ];
+  const n = RATIOS.length;
+  const STORE_KEY = "bisection-bt-history-v1";
+
+  async function loadHistory(){
+    try {
+      const v = localStorage.getItem(STORE_KEY);
+      return v ? JSON.parse(v) : [];
+    } catch(e){ return []; }
+  }
+  async function saveHistory(history){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(history)); } catch(e){}
+  }
+  async function clearHistory(){
+    try { localStorage.removeItem(STORE_KEY); } catch(e){}
+  }
+
+  let wins = Array.from({length:n}, () => Array(n).fill(0));
+  let shown = Array.from({length:n}, () => Array(n).fill(0));
+  let history = [];
+  let current = null;
+
+  function rebuildFromHistory(){
+    wins = Array.from({length:n}, () => Array(n).fill(0));
+    shown = Array.from({length:n}, () => Array(n).fill(0));
+    for (const h of history){
+      wins[h.winner][h.loser]++;
+      shown[h.i][h.j]++; shown[h.j][h.i]++;
+    }
+  }
+
+  function totalPairs(){ return n*(n-1)/2; }
+  function pairsCovered(){
+    let c = 0;
+    for (let i=0;i<n;i++) for (let j=i+1;j<n;j++) if (shown[i][j] > 0) c++;
+    return c;
+  }
+  function totalShownFor(idx){
+    let s = 0;
+    for (let j=0;j<n;j++) if (j!==idx) s += shown[idx][j];
+    return s;
+  }
+  function leastShownPair(){
+    let min = Infinity, candidates = [];
+    for (let i=0;i<n;i++) for (let j=i+1;j<n;j++){
+      const c = shown[i][j];
+      if (c < min){ min = c; candidates = [[i,j]]; }
+      else if (c === min){ candidates.push([i,j]); }
+    }
+    return candidates[Math.floor(Math.random()*candidates.length)];
+  }
+
+  const WARMUP_PER_ITEM = 2;
+  function pickPair(){
+    const minSeen = Math.min(...Array.from({length:n}, (_,i) => totalShownFor(i)));
+    let pair;
+    if (minSeen < WARMUP_PER_ITEM){
+      pair = leastShownPair();
+    } else {
+      const p = fitBradleyTerry();
+      let best = -Infinity, bestPair = null;
+      for (let a=0;a<n;a++) for (let b=a+1;b<n;b++){
+        const info = (p[a]*p[b]) / Math.pow(p[a]+p[b], 2);
+        const score = info / (1 + shown[a][b]);
+        if (score > best){ best = score; bestPair = [a,b]; }
+      }
+      pair = bestPair;
+    }
+    const [i,j] = pair;
+    return Math.random() < 0.5 ? [i,j] : [j,i];
+  }
+
+  function renderBar(elBig, elSmall, r, bigOnLeft){
+    const big = Math.round(r*1000)/10;
+    const small = Math.round((1-r)*1000)/10;
+    if (bigOnLeft){
+      elBig.style.flex = big; elSmall.style.flex = small;
+    } else {
+      elBig.style.flex = small; elSmall.style.flex = big;
+    }
+  }
+
+  function newTrial(){
+    const [i,j] = pickPair();
+    current = { i, j };
+    renderBar(document.getElementById('segA1'), document.getElementById('segA2'), RATIOS[i].r, true);
+    renderBar(document.getElementById('segB1'), document.getElementById('segB2'), RATIOS[j].r, true);
+    document.getElementById('trialNum').textContent = history.length + 1;
+    document.getElementById('pairsLogged').textContent = history.length;
+    document.getElementById('coverage').textContent = pairsCovered() + '/' + totalPairs();
+  }
+
+  async function choose(panel){
+    if (!current) return;
+    const winner = panel === 'A' ? current.i : current.j;
+    const loser  = panel === 'A' ? current.j : current.i;
+    wins[winner][loser]++;
+    shown[current.i][current.j]++; shown[current.j][current.i]++;
+    history.push({ i: current.i, j: current.j, winner, loser });
+    await saveHistory(history);
+    newTrial();
+  }
+
+  function fitBTFromCounts(winMatrix){
+    const EPS = 0.5;
+    const W = winMatrix.map(row => row.slice());
+    for (let i=0;i<n;i++) for (let j=i+1;j<n;j++){ W[i][j]+=EPS; W[j][i]+=EPS; }
+
+    let p = Array(n).fill(1);
+    for (let iter=0; iter<400; iter++){
+      const np = Array(n).fill(0);
+      for (let i=0;i<n;i++){
+        let num=0, den=0;
+        for (let j=0;j<n;j++){
+          if (j===i) continue;
+          num += W[i][j];
+          den += (W[i][j]+W[j][i]) / (p[i]+p[j]);
+        }
+        np[i] = den>0 ? num/den : p[i];
+      }
+      const logSum = np.reduce((a,b)=>a+Math.log(Math.max(b,1e-9)),0);
+      const gm = Math.exp(logSum/n);
+      p = np.map(v=>v/gm);
+    }
+    const sum = p.reduce((a,b)=>a+b,0);
+    return p.map(v=>v/sum);
+  }
+  function fitBradleyTerry(){ return fitBTFromCounts(wins); }
+
+  function renderResults(){
+    const probs = fitBradleyTerry();
+    const ranked = RATIOS.map((c,idx)=>({...c, idx, p: probs[idx]}))
+                          .sort((a,b)=>b.p-a.p);
+    const maxP = Math.max(ranked[0].p, 1e-9);
+
+    const rowsEl = document.getElementById('rows');
+    rowsEl.innerHTML = '';
+    ranked.forEach((c, rank) => {
+      const row = document.createElement('div');
+      row.className = 'row' + (c.isPhi ? ' phi' : '');
+      row.innerHTML = `
+        <div class="rank">${rank+1}</div>
+        <div class="label">${c.label}${c.note ? `<small>${c.note}</small>` : ''}</div>
+        <div class="track">
+          <div class="fill" style="width:${(c.p/maxP*100).toFixed(1)}%"></div>
+        </div>
+        <div class="val">${c.p.toFixed(3)}</div>
+      `;
+      rowsEl.appendChild(row);
+    });
+
+    document.getElementById('resultsMeta').textContent = history.length + ' comparisons · ' + pairsCovered() + '/' + totalPairs() + ' pairs sampled';
+
+    const phiEntry = ranked.find(c => c.isPhi);
+    const phiRank = ranked.indexOf(phiEntry) + 1;
+    const verdictEl = document.getElementById('verdict');
+    let phiLine;
+    if (history.length < totalPairs()){
+      phiLine = `φ⁻¹ currently ranks ${ordinal(phiRank)} of ${n}. You've covered ${pairsCovered()} of ${totalPairs()} distinct pairs at least once.`;
+    } else if (phiRank === 1){
+      phiLine = `φ⁻¹ ranks ${ordinal(phiRank)} of ${n} in your data — the golden ratio actually came out on top for you.`;
+    } else {
+      phiLine = `φ⁻¹ ranks ${ordinal(phiRank)} of ${n} in your data, beaten by ${ranked.filter(c=>!c.isPhi && c.p>phiEntry.p).map(c=>c.label).join(', ')}.`;
+    }
+    verdictEl.innerHTML = `<span>${phiLine}</span>`;
+  }
+
+  function ordinal(num){
+    const s = ["th","st","nd","rd"], v = num % 100;
+    return num + (s[(v-20)%10] || s[v] || s[0]);
+  }
+
+  document.getElementById('panelA').addEventListener('click', () => choose('A'));
+  document.getElementById('panelB').addEventListener('click', () => choose('B'));
+
+  document.getElementById('showResults').addEventListener('click', () => {
+    const trialView = document.getElementById('trial-view');
+    const results = document.getElementById('results');
+    const showing = !results.hidden;
+    if (showing){
+      results.hidden = true;
+      trialView.hidden = false;
+      document.getElementById('showResults').textContent = 'View results';
+    } else {
+      renderResults();
+      results.hidden = false;
+      trialView.hidden = true;
+      document.getElementById('showResults').textContent = 'Back to test';
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', async () => {
+    if (!confirm('Clear all recorded comparisons?')) return;
+    history = [];
+    rebuildFromHistory();
+    await clearHistory();
+    document.getElementById('results').hidden = true;
+    document.getElementById('trial-view').hidden = false;
+    document.getElementById('showResults').textContent = 'View results';
+    newTrial();
+  });
+
+  (async function init(){
+    history = await loadHistory();
+    rebuildFromHistory();
+    newTrial();
+  })();
+})();
+</script>

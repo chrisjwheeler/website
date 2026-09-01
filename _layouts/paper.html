@@ -28,6 +28,69 @@
     <link rel="stylesheet"
           href="{{ '/assets/paper.css' | relative_url }}">
 
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                nicefrac: ['\\frac{#1}{#2}', 2]
+            }
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        startup: {
+            ready: function () {
+                function cleanTex(tex) {
+                    tex = tex || '';
+                    tex = tex.replace(/%[ \t]*(?:\r\n|\n|\r)/g, '');
+                    tex = tex.replace(/%[ \t]*$/gm, '');
+                    tex = tex.replace(/\\nicefrac/g, '\\frac');
+                    return tex;
+                }
+                document.querySelectorAll('math.ltx_Math[alttext]').forEach(function (el) {
+                    var tex = cleanTex(el.getAttribute('alttext'));
+                    var inEqn = el.closest('.ltx_equation, .ltx_equationgroup, .ltx_eqn_table');
+                    var display = el.getAttribute('display') === 'block' || !!inEqn;
+                    var node = document.createElement(display ? 'div' : 'span');
+                    node.className = 'ltx_math_tex';
+                    if (display) {
+                        node.classList.add('ltx_math_display');
+                    }
+                    node.textContent = (display ? '\\[' : '\\(') + tex + (display ? '\\]' : '\\)');
+                    el.replaceWith(node);
+                });
+                MathJax.startup.defaultReady();
+                MathJax.startup.promise.then(function () {
+                    function fitMath() {
+                        document.querySelectorAll('.paper-main mjx-container').forEach(function (mjx) {
+                            mjx.style.transform = '';
+                            mjx.style.marginRight = '';
+                            mjx.style.marginBottom = '';
+                            var parent = mjx.closest('.ltx_eqn_cell, .algorithm-lines li, .ltx_math_display, .ltx_p') || mjx.parentElement;
+                            if (!parent) return;
+                            var available = parent.clientWidth;
+                            if (!available) return;
+                            var w = mjx.scrollWidth;
+                            if (w > available + 2) {
+                                var scale = available / w;
+                                mjx.style.transformOrigin = 'left top';
+                                mjx.style.transform = 'scale(' + scale + ')';
+                                mjx.style.marginRight = ((scale - 1) * w) + 'px';
+                                mjx.style.marginBottom = ((scale - 1) * mjx.scrollHeight) + 'px';
+                            }
+                        });
+                    }
+                    fitMath();
+                    window.addEventListener('resize', fitMath);
+                });
+            }
+        }
+    };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
 </head>
 
 
