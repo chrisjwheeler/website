@@ -46,7 +46,7 @@
     <button type="button" class="cube-ctl" id="backgroundBtn">Set background</button>
     <button type="button" class="cube-ctl" id="paperBtn">Set page colour</button>
   </div>
-  <p class="cube-defaults">default background #001340 · default page colour #f4f3ed</p>
+  <p class="cube-defaults" id="cubeDefaults"></p>
 
 </div>
 
@@ -631,6 +631,17 @@
   const BG_KEY = 'twohalves-favourite-bg';
   const PAPER_KEY = 'twohalves-favourite-paper';
 
+  function themeDefault(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function fillDefaultsLine(){
+    const el = document.getElementById('cubeDefaults');
+    if (!el) return;
+    el.textContent = 'default background ' + themeDefault('--background-default')
+      + ' · default page colour ' + themeDefault('--paper-default');
+  }
+
   function storedHex(key){
     try {
       const c = localStorage.getItem(key);
@@ -691,6 +702,7 @@
   });
   document.getElementById('startHex').addEventListener('change', applyStartHex);
   loadProgress();
+  fillDefaultsLine();
   syncThemeButtons();
   render();
 })();

@@ -23,11 +23,13 @@
 }
 
 :root {
-    --background: #001340;
+    --background-default: #001450;
+    --paper-default: #f4f3ed;
+    --background: var(--background-default);
     --text: #e7e9e6;
     --muted: #9ba2a8;
     --line: #39424b;
-    --paper: #f4f3ed;
+    --paper: var(--paper-default);
     --ink: #17191b;
     --paper-muted: #656565;
     --max-width: 945px;

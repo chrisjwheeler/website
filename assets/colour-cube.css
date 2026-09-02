@@ -6,6 +6,7 @@
     --cube-cell: min(42px, 10vw);
     --cube-gap: 3px;
     --cube-grid: calc(5 * var(--cube-cell) + 4 * var(--cube-gap));
+    --cube-box-border: 2.4px;
     margin: 0 auto;
     aspect-ratio: auto;
     min-height: calc(var(--page-width) * 11 / 8.5);
@@ -89,7 +90,7 @@
     letter-spacing: 0.06em;
     text-transform: lowercase;
     background: transparent;
-    border: 1px solid var(--line);
+    border: var(--cube-box-border) solid var(--ink);
     color: var(--ink);
     cursor: pointer;
 }
@@ -140,7 +141,7 @@
 .cube-crumb {
     width: 22px;
     height: 22px;
-    border: 1px solid var(--ink);
+    border: var(--cube-box-border) solid var(--ink);
     cursor: pointer;
     padding: 0;
     background: var(--paper);
@@ -247,7 +248,7 @@
 
 .cube-cell {
     position: relative;
-    border: 1px solid var(--paper);
+    border: var(--cube-box-border) solid var(--ink);
     padding: 0;
     cursor: pointer;
     min-width: 0;
@@ -296,7 +297,7 @@
     flex-direction: row;
     width: var(--cube-grid);
     height: var(--cube-grid);
-    border: 1px solid var(--ink);
+    border: var(--cube-box-border) solid var(--ink);
     padding: 0;
     overflow: hidden;
     color: #fff;
@@ -350,7 +351,7 @@
     text-transform: lowercase;
     color: var(--ink);
     background: transparent;
-    border: 1px solid var(--line);
+    border: var(--cube-box-border) solid var(--ink);
     width: 8.2em;
     padding: 6px 8px;
     text-align: center;
@@ -361,8 +362,7 @@
 }
 
 .cube-hex-input.is-bad {
-    border-color: var(--ink);
-    outline: 1px solid var(--ink);
+    outline: var(--cube-box-border) solid var(--ink);
 }
 
 .cube-ctl:disabled {
