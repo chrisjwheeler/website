@@ -49,7 +49,7 @@
 .cube-toolbar {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     gap: 10px 22px;
     margin: 0 0 22px;
@@ -57,12 +57,14 @@
 
 .cube-mag,
 .cube-space,
-.cube-axes {
+.cube-axes,
+.cube-hex {
     display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
-    gap: 8px 10px;
+    justify-content: flex-end;
+    gap: 6px;
     flex: 0 0 auto;
 }
 
@@ -120,7 +122,8 @@
 .cube-axis:focus-visible,
 .cube-ctl:focus-visible,
 .cube-cell:focus-visible,
-.cube-crumb:focus-visible {
+.cube-crumb:focus-visible,
+.cube-hex-input:focus-visible {
     outline: 2px solid var(--ink);
     outline-offset: 2px;
 }
@@ -330,6 +333,38 @@
     padding: 9px 16px;
 }
 
+.cube-defaults {
+    margin: 10px 0 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: var(--paper-muted);
+}
+
+.cube-hex-input {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    width: 8.2em;
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.cube-hex-input::placeholder {
+    color: var(--paper-muted);
+}
+
+.cube-hex-input.is-bad {
+    border-color: var(--ink);
+    outline: 1px solid var(--ink);
+}
+
 .cube-ctl:disabled {
     opacity: 0.4;
     cursor: default;
@@ -436,6 +471,21 @@
 
     .cube-space .cube-mag-btn {
         min-width: 0;
+        padding: 10px 6px;
+    }
+
+    .cube-hex {
+        grid-column: 1 / -1;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        width: auto;
+    }
+
+    .cube-hex-input {
+        min-height: 44px;
+        width: 100%;
+        font-size: 0.75rem;
         padding: 10px 6px;
     }
 

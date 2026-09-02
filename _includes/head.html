@@ -1,0 +1,71 @@
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+{%- if page.title %}
+  {%- assign html_title = page.title | append: " — twohalv.es" %}
+  {%- assign seo_title = page.title %}
+{%- else %}
+  {%- assign html_title = "twohalv.es" %}
+  {%- assign seo_title = site.title %}
+{%- endif %}
+{%- assign seo_description = page.description | default: page.subtitle | default: site.description %}
+{%- assign seo_origin = site.canonical_url | default: site.url %}
+{%- assign seo_url = page.url | relative_url | prepend: seo_origin %}
+{%- assign og_image_src = page.image | default: site.og_image | default: "/assets/og-image.png" %}
+{%- if og_image_src contains "://" %}
+  {%- assign og_image = og_image_src %}
+{%- else %}
+  {%- assign og_image = og_image_src | relative_url | prepend: seo_origin %}
+{%- endif %}
+{%- if page.layout == "post" %}
+  {%- assign og_type = "article" %}
+{%- else %}
+  {%- assign og_type = "website" %}
+{%- endif %}
+
+<title>{{ html_title }}</title>
+
+<meta name="description"
+      content="{{ seo_description | xml_escape }}">
+
+<link rel="canonical" href="{{ seo_url }}">
+
+<meta property="og:site_name" content="{{ site.title | xml_escape }}">
+<meta property="og:title" content="{{ seo_title | xml_escape }}">
+<meta property="og:description" content="{{ seo_description | xml_escape }}">
+<meta property="og:url" content="{{ seo_url }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="{{ og_image }}">
+<meta property="og:image:secure_url" content="{{ og_image }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="{{ page.image_width | default: 1200 }}">
+<meta property="og:image:height" content="{{ page.image_height | default: 627 }}">
+<meta property="og:image:alt" content="{{ seo_title | xml_escape }}">
+{% if page.layout == "post" and page.date %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+{% endif %}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ seo_title | xml_escape }}">
+<meta name="twitter:description" content="{{ seo_description | xml_escape }}">
+<meta name="twitter:image" content="{{ og_image }}">
+
+<link rel="stylesheet"
+      href="{{ '/assets/style.css' | relative_url }}">
+{% if page.project_css %}
+<link rel="stylesheet"
+      href="{{ page.project_css | relative_url }}">
+{% endif %}
+{% if page.paper_assets %}
+<link rel="stylesheet"
+      href="{{ page.paper_assets | append: 'LaTeXML.css' | relative_url }}">
+<link rel="stylesheet"
+      href="{{ page.paper_assets | append: 'ltx-article.css' | relative_url }}">
+<link rel="stylesheet"
+      href="{{ '/assets/paper.css' | relative_url }}">
+{% endif %}
+
+{% include favourite-bg.html %}

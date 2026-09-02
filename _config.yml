@@ -2,6 +2,10 @@ title: "twohalv.es"
 description: "A collection of writing."
 
 url: "https://twohalv.es"
+# Keep a dedicated origin so OG/canonical URLs stay production
+# even when `jekyll serve` rewrites site.url to localhost.
+canonical_url: "https://twohalv.es"
+og_image: "/assets/og-image.png"
 
 markdown: kramdown
 

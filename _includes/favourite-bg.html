@@ -1,9 +1,13 @@
 <script>
 (function(){
   try {
-    var c = localStorage.getItem('twohalves-favourite-bg');
-    if (c && /^#[0-9A-Fa-f]{6}$/.test(c)) {
-      document.documentElement.style.setProperty('--background', c);
+    var bg = localStorage.getItem('twohalves-favourite-bg');
+    if (bg && /^#[0-9A-Fa-f]{6}$/.test(bg)) {
+      document.documentElement.style.setProperty('--background', bg);
+    }
+    var paper = localStorage.getItem('twohalves-favourite-paper');
+    if (paper && /^#[0-9A-Fa-f]{6}$/.test(paper)) {
+      document.documentElement.style.setProperty('--paper', paper);
     }
   } catch (e) {}
 })();
