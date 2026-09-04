@@ -10,15 +10,15 @@
     <div class="control-pane">
       <div class="pane-head"><h2>Functions</h2><span class="small-label">LaTeX input</span></div>
       <div class="function-list">
-        <div class="function-row"><div class="fn-label">f₁</div><math-field id="f0" aria-label="f1">Re((x+iy)^2)</math-field></div>
-        <div class="function-row"><div class="fn-label">f₂</div><math-field id="f1" aria-label="f2">Im((x+iy)^2)</math-field></div>
-        <div class="function-row"><div class="fn-label">f₃</div><math-field id="f2" aria-label="f3">\frac{1}{x}</math-field></div>
-        <div class="function-row"><div class="fn-label">f₄</div><math-field id="f3" aria-label="f4">0</math-field></div>
+        <div class="function-row"><div class="fn-label">f₁</div><math-field id="f0" aria-label="f1">cos(x)</math-field></div>
+        <div class="function-row"><div class="fn-label">f₂</div><math-field id="f1" aria-label="f2">sin(x)</math-field></div>
+        <div class="function-row"><div class="fn-label">f₃</div><math-field id="f2" aria-label="f3">cos(y)</math-field></div>
+        <div class="function-row"><div class="fn-label">f₄</div><math-field id="f3" aria-label="f4">sin(y)</math-field></div>
       </div>
       <div class="domain-strip">
-        <div class="range-group"><span class="small-label">x domain</span><div class="range-pair"><input id="xmin" type="number" step="any" value="-2" aria-label="x minimum"><input id="xmax" type="number" step="any" value="2" aria-label="x maximum"></div></div>
-        <div class="range-group"><span class="small-label">y domain</span><div class="range-pair"><input id="ymin" type="number" step="any" value="-2" aria-label="y minimum"><input id="ymax" type="number" step="any" value="2" aria-label="y maximum"></div></div>
-        <div class="resolution"><span class="small-label">grid resolution</span><div class="resolution-line"><input id="resolution" type="range" min="4" max="30" step="1" value="15"><strong id="resolution-value">15²</strong></div></div>
+        <div class="range-group"><span class="small-label">x domain</span><div class="range-pair"><input id="xmin" type="number" step="any" value="-6" aria-label="x minimum"><input id="xmax" type="number" step="any" value="6" aria-label="x maximum"></div></div>
+        <div class="range-group"><span class="small-label">y domain</span><div class="range-pair"><input id="ymin" type="number" step="any" value="-6" aria-label="y minimum"><input id="ymax" type="number" step="any" value="6" aria-label="y maximum"></div></div>
+        <div class="resolution"><span class="small-label">grid resolution</span><div class="resolution-line"><input id="resolution" type="range" min="4" max="30" step="1" value="20"><strong id="resolution-value">20²</strong></div></div>
       </div>
     </div>
 
@@ -32,9 +32,9 @@
         <div class="palette-row">
           <div><div class="small-label">colour system</div><div id="palette-name" class="status" style="margin-top:3px">perceptual</div></div>
           <div class="mode-switch" aria-label="Colour model">
-            <button id="mode-oklab" class="active" type="button">OKLab</button>
+            <button id="mode-oklab" type="button">OKLab</button>
             <button id="mode-cvd" type="button">CVD</button>
-            <button id="mode-rgb" type="button">RGB</button>
+            <button id="mode-rgb" class="active" type="button">RGB</button>
           </div>
         </div>
         <div class="palette-info" id="palette-info"></div>
@@ -101,8 +101,8 @@ const ROLES = [
 
 const state = {
   assignments:[0,1,2,3],
-  enabled:[true,true,false,false],
-  colourMode:"oklab",
+  enabled:[true,true,true,true],
+  colourMode:"rgb",
   fixedRole:"color1",
   data:null,
   draggingRole:null,
@@ -582,19 +582,6 @@ function refreshVisualisation(data){
   if(window.Plotly) Plotly.Plots.resize("plot");
 }
 
-function lockMiddleSwatch(){
-  const infos=state.data?activeColourInfos(state.data):[];
-  if(!infos.length) return;
-  const mid=Math.floor(COLOUR_BINS/2);
-  const spec=filterSpec(...infos.map(info=>[info.ri,mid]));
-  const cell=$$("#key-content .swatch-cell[data-filter]").find(el=>el.dataset.filter===spec)
-    || $$("#key-content .swatch-cell[data-filter]")[mid];
-  if(!cell) return;
-  state.lockedFilter=parseFilterSpec(cell.dataset.filter);
-  state.hoverFilter=null;
-  scheduleFilterPlot();
-}
-
 function drawSurface(data){
   const verticalOn=state.enabled[0] && data.roleValues[0].some(finite);
   const activeColours=colourRoleIndices().map(ri=>state.enabled[ri] && data.roleValues[ri].some(finite));
@@ -790,13 +777,12 @@ function wireUI(){
     }
   });
   customElements.whenDefined("math-field").then(async ()=>{
-    const defaults=["Re((x+iy)^2)","Im((x+iy)^2)","\\frac{1}{x}","0"];
+    const defaults=["cos(x)","sin(x)","cos(y)","sin(y)"];
     $$('math-field').forEach((mf,i)=>{
       mf.smartFence=true;mf.virtualKeyboardMode="onfocus";
       if(defaults[i]) mf.setValue(defaults[i]);
     });
     await recompute();
-    lockMiddleSwatch();
     $$('math-field').forEach(mf=>mf.addEventListener("input",scheduleUpdate));
   });
 }
