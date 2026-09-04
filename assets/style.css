@@ -203,6 +203,10 @@ main {
 }
 
 .article-header .eyebrow { color: var(--paper-muted); }
+
+.article-stats {
+    margin: 16px 0 0;
+}
 .article-header h1 {
     margin: 12px 0 12px;
     font-family: var(--serif);
@@ -259,4 +263,12 @@ main {
     .article-header { margin: 0 auto 2em; }
     .article-header h1 { font-size: 1.5rem; }
     .article-body { font-size: 0.9375rem; }
+}
+
+@media (max-width: 600px) and (hover: none) and (pointer: coarse) {
+    .article-header h1 { font-size: 1.125rem; }
+    .article-subtitle { font-size: 0.75rem; }
+    .article-body { font-size: 0.75rem; line-height: 1.55; }
+    .article-body h2 { font-size: 0.9375rem; }
+    .article-body h3 { font-size: 0.8125rem; }
 }

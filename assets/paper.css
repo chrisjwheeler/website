@@ -432,3 +432,31 @@
         margin-inline: -6px;
     }
 }
+
+@media (max-width: 600px) and (hover: none) and (pointer: coarse) {
+    .paper-main .ltx_page_main {
+        font-size: 0.75rem;
+    }
+
+    .paper-main .ltx_title_document,
+    .paper-main .ltx_titlepage .ltx_p:last-child,
+    .paper-main .ltx_title_part {
+        font-size: 1.125rem;
+    }
+
+    .paper-main .ltx_title_section,
+    .paper-main .ltx_title_appendix,
+    .paper-main .ltx_title_bibliography,
+    .paper-main .ltx_title_contents {
+        font-size: 0.9375rem;
+    }
+
+    .paper-main .ltx_title_subsection {
+        font-size: 0.8125rem;
+    }
+
+    .paper-main .ltx_abstract,
+    .paper-main .ltx_titlepage .ltx_p:first-child {
+        font-size: 0.75rem;
+    }
+}

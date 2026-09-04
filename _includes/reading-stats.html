@@ -1,0 +1,10 @@
+{%- assign words = content | strip_html | number_of_words -%}
+{%- assign minutes = words | plus: 249 | divided_by: 250 -%}
+{%- if minutes < 1 -%}
+    {%- assign minutes = 1 -%}
+{%- endif -%}
+<p class="eyebrow article-stats">
+    {{ words }} word{% unless words == 1 %}s{% endunless %}
+    <span aria-hidden="true"> · </span>
+    {{ minutes }} min
+</p>
