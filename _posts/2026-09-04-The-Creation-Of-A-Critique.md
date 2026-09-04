@@ -61,12 +61,22 @@ After dinner, my parents went to the balcony to look over the city. This left me
 
 “Because I expect eloquence.” Bens face contorted. “Considering all that you have read, all the people you have dined with. How you can look at such a work as this, and say something so uneducated?”
 
-This even shocked me a little, and Ben was taken aback. He looked at something across the room, and went to say something definitive, but he did not. “I don’t want to speak about this anymore,” he said and then withdrew. The start of a ghastly long silence was beginning, but was interrupted by the swing of the door, as my parents returned. They spoke joyously of the view into the city, and what we would drink tonight. Uncle Tony began to light his pipe, pulling his matches from his blazer and opening them with the same hand. My father reclined into the sofa, stretching his legs out onto the carpet. I began to smoke myself. My father whose presence in a room has only grown with age, began to speak.
+This even shocked me a little, and Ben was taken aback. He looked at something across the room, and went to say something definitive, but he did not. “I don’t want to speak about this anymore,” he said and then withdrew. The start of a ghastly long silence was beginning, but was interrupted by the swing of the door, as my parents returned. Oblivious to everything, they spoke joyously of the view into the city, and what we would drink tonight. Uncle Tony began to light his pipe, pulling his matches from his blazer and opening them with the same hand. My father reclined into the sofa, stretching his legs out onto the carpet. I began to smoke myself. My father whose presence in a room has only grown with age, began to speak.
 
-“Boys, it’s so pleasant to have you back, even if it’s just a fleeting visit. Life can get so busy, as I am sure you now know better than me. At my age so little changes. Maybe I’ll go somewhere and bring back an ornament, or meet a friend who will tell me some gossip of the past. It’s only small changes now for me. Like buying an old Ohgane.”  Ben looked away from the room, and tensed. But Uncle Tony rolled his head back, pipe in mouth breathing another cloud. “Patrick, my dear, have you asked Benjamin what he thinks of Ohange?” I could see Ben clenching his teeth. “Oh Patrick, do ask him. ” Ben erupted.
+“Boys, it’s so pleasant to have you back, even if it’s just a fleeting visit. Life can get so busy, as I am sure you now know better than me. At my age so little changes. Maybe I’ll go somewhere and bring back an ornament, or meet a friend who will tell me some gossip of the past. It’s only small changes now for me.” He sipped his wine, "like buying an old Ohgane from Tony.”  
 
-“Stop it Tony. If my opinion on it was so horrible, why bring it up? And I don’t care to hear your ramblings on it again either. ” This silenced everyone, and shocked my parents.
+Ben looked away from the room, but I looked at Tony. He had rolled his head back, pipe in mouth, breathing deeply. “Patrick, my dear, have you asked Benjamin what he thinks of Ohange?” He said that he had not. We were all looking at Ben now; he was clenching his teeth. My father was confused, "is everything okay Ben?"
 
-Tony was amused and puffed a plume of smoke, “Benjamin some of my ramblings have been cited in books.”
+“Oh Patrick, do ask him what he thinks.”
 
-“And no fucker with sense reads them,” he stood up. “Do you know what I thought of just now?” He said walking to the side of the room. “All these years, all that you’ve written, all that you’ve debated.” He picked a notepad from a side table and walked toward Tony. “Three books you’ve published Tony, and how many works have you valued? You don’t think that you should learn to draw a picture?" He tossed the open notebook toward him, it landed on a coffee table and span. Tony watched it, and then looked up. “Draw a picture?" He chuckled. "My dear boy, I am a historian not an artist.” Ben stood over Tony who was still sitting. He was angry before, but now looked arrogant. “Give it a go Tony, who knows, you might even be good at it.” Tony’s brow narrowed and he blew a thick cloud of smoke in Ben’s face. I had not once seen him do this.
+“Stop it Tony,” ben erupted. “If my opinion on it was so horrible, why bring it up? And I don’t care to hear your ramblings on it again either. ” This silenced everyone, and shocked my parents.
+
+Tony puffed a three clouds in quick succession. “Benjamin some of my ramblings have been cited in books.”
+
+“And no fucker with sense reads them.”
+
+ Ben stood up. “Do you know what I thought of just now?” He said walking to the side of the room. “All these years, all that you’ve written, all that you’ve debated.” He picked a notepad from a side table and walked toward Tony. “Three books you’ve published Tony, and how many works have you valued?” He was a few steps away. “You don’t think that you should learn to draw a picture?" He said, then tossed the open notebook toward him. We all watched as it landed on a coffee table and span. Tony looked up from it. “Draw a picture?" He chuckled. "My dear boy, I am a historian, and a critic, not an artist.” Ben stood over Tony who was still sitting. Ben was angry before, but now he just looked arrogant. 
+ 
+ “Give it a go Tony, who knows, you might even be good at it.” Tony’s brow narrowed and he blew a thick cloud of smoke in Ben’s face. 
+ 
+ I had not once seen him do this.
