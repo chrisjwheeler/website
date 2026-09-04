@@ -12,12 +12,12 @@ parent: work
     <div class="tree-files">
         <a href="{{ '/work/mathematics/loss-crossovers/' | relative_url }}" class="file-row">
             <span class="branch-line" aria-hidden="true">├──</span>
-            <span class="file-name">loss crossovers mini-project</span>
+            <span class="file-name">Loss crossovers mini-project</span>
             <time datetime="2026-01-01">2026-01-01</time>
         </a>
         <a href="{{ '/work/mathematics/geometry-of-refusal/' | relative_url }}" class="file-row">
             <span class="branch-line" aria-hidden="true">└──</span>
-            <span class="file-name">the geometry of refusal</span>
+            <span class="file-name">The geometry of refusal</span>
             <time datetime="2026-07-01">2026-07-01</time>
         </a>
     </div>

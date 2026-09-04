@@ -1,0 +1,2 @@
+{%- assign title_words = include.title | split: " " -%}
+{{- title_words.first | capitalize -}}{%- for word in title_words offset: 1 %} {{ word }}{%- endfor -%}

@@ -19,7 +19,7 @@
                 {% for post in category_posts %}
                 <a href="{{ post.url | relative_url }}" class="file-row">
                     <span class="branch-line" aria-hidden="true">{% unless branch_is_last %}│&nbsp;&nbsp;{% else %}&nbsp;&nbsp;&nbsp;{% endunless %}{% if forloop.last %}└──{% else %}├──{% endif %}</span>
-                    <span class="file-name">{{ post.title }}</span>
+                    <span class="file-name">{% include file-title.html title=post.title %}</span>
                     <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
                 </a>
                 {% endfor %}
