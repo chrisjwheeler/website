@@ -7,7 +7,7 @@ subtitle: "What inspires an artist, and who influences a critic?"
 
 I owe more to my uncle than my mother; perhaps something only me and Telemachus can say. Tuesdays were named after him, and he always came brilliantly polished, clad in tweed and heavy cotton. One week it would be green, matching a necktie patterned with peacock feathers. The week after it would be the brown of his spectacles and notepad. What never changed was his strain of tobacco. He liked the unflavoured variety, and would pack it in with the dexterity of a watchmaker. The plumes of smoke which spun up and around him fogged your mind. They gave his conversation an ethereal component, adding wisdom to anything he said gently, and certainty to anything that he interjected. He had nasty tricks in debate. He would use his arrogance to knock you off balance, making you speak fast, without pauses. Uncle Tony would then ask you something you could answer, sending you in a different direction. He would breathe out a puff of smoke, referencing something obscure. You would continue, but then he would point out your contradiction, exhaling again. Before you worked it out, he would ask you something simple. He could make a scholar doubt their own subject, and a mathematician trip over a sum.
 
-Uncle Tony had an interesting way with me and my brother. He would lecture us; tell us something important, ask us what we had read, what artist we liked, what universities aren’t worth going to, which books were not worth reading. We used to sit cross-legged on the carpet in front of him. He taught us French at 5, and made us translate philosophy at 15. I am a classicist now myself, and he had me whipped so tightly together that my interviewers at Balliol did not know what to make of me. I spent a year working out how to study, and even with a year of no progress I was top of my class. I cannot quite understand why he did not have the same effect on my brother; a mathematician without a single influential paper. My brother Ben has always been quite contrarian, and perhaps a bit too practical. He has a different approach to things, especially compared to my family. Tony treated us identically, but while I saw the grandeur and wisdom, Ben saw books and facts. Don’t get this wrong: until about fifteen he was absolutely enthralled by Tony, but faded after.
+Uncle Tony had an interesting way with me and my brother. He would lecture us; tell us something important, ask us what we had read, what artist we liked, what universities aren’t worth going to, which books were not worth reading. We used to sit cross-legged on the carpet in front of him. He taught us French at 5, and made us translate philosophy at 15. I am a classicist now myself, and he had me whipped so tightly together that my interviewers at Balliol did not know what to make of me. I spent a year working out how to study, and even with a year of no progress I was top of my class. I cannot quite understand why he did not have the same effect on my brother; a mathematician without a single influential paper. My brother Ben has always been quite contrarian, and perhaps a bit too practical. He has a different approach to things, especially compared to my family. Tony treated us identically, but while I saw the grandeur and wisdom, Ben saw books and facts. Don’t get this wrong: until about fifteen he was absolutely enthralled by Tony, but that faded after.
 
 Every week we would prepare our translation, study the artists, and question each other on the reading. On Wednesdays we would do all the school work, he the science, and me what was left. This freed the rest of the week’s evenings. Occasionally, Uncle Tony was forced to miss a Tuesday. He is a cultural historian, with a focus on the role that art plays in a society. He is also a great figure in the world of art valuation, so during the winter months we often had to wait an extra week to see him. The sessions after were always the liveliest.
 
@@ -17,13 +17,13 @@ I remember one time so vividly, that week we had read the philosophy of the Pyth
 
 I’d seen this mentioned, so I knew the answer, “It’s a special type of number which cannot be expressed as the ratio of two wholes.” Uncle Tony’s smiled at my retort, so Ben pushed again, now speaking with a tremble.
 
-“Name another. ” I was momentarily panicked, but again answered decisively.
+“Name another.” I was momentarily panicked, but again answered decisively.
 
 “Well, I suppose the square root of three.”
 
 Ben flung up his arms, he was angry and tearful.
 
-“Tony ask him to prove it. He doesn’t know that for sure. He spent no time understanding that, it could be wrong for all he knows. ” Tony raised a hand to calm him. And eventually he spoke.
+“Uncle Tony ask him to prove it. He doesn’t know that for sure. He spent no time understanding that, it could be wrong for all he knows.” Tony raised a hand to calm him. And eventually he spoke.
 
 “Well Ben, he has demonstrated that he can make accurate deductions. At this time, in this particular conversation, that is enough. “ Ben squirmed. “Now, I encourage you to stick to the syllabus I give you; it includes everything someone at your level needs. If that is not enough, then I can give you more, but don’t beat off the track, there is a reason you are on it.“
 
@@ -37,7 +37,7 @@ After dinner, my parents went to the balcony to look over the city. This left me
 
 “No, not really,” he said politely,  “But I have started a life drawing class.”
 
-“Really? “ inquired Uncle Tony, “No art has taken you? I’ll tell you what Benjamin, you must have a look at the recent works of Ohgane. I think we are seeing a genesis of a new movement. ”
+“Really? “ inquired Uncle Tony, “No art has taken you? I’ll tell you what Benjamin, you must have a look at the recent works of Ohgane. I think we are seeing a genesis of a new movement.”
 
 “Isn’t that work there signed Ohgane? The one above the mantle piece.” Ben asked. Tony lent a small portion of his body forward, “It is indeed Benjamin, but his work now is different. It has more provenance, it is more inspired. Like our other old friend, Ohgane spent some time with the sources, and it touched him dearly.” It was good that Ben was involved in the conversation. I walked to the shelf and picked up the catalogue raisonné, and flipped to the work Uncle Tony was referencing. It is an image of lady, who is sat poised against a textured orange background. The composition mirrors that of the Venus, while the strength of the oil and the strength of the light mirror that of Caravaggio. Her form is intentionally distorted and obscured, in reference to some of the works of Freud. You cannot make out her face, and most people fail to realise she is even in the painting. The picture was printed across both pages of the catalogue, and I turned it carefully around. Ben pushed his glasses up his nose, and looked for a while. Uncle Tony started by studying the work, but then turned to Ben.
 
@@ -47,7 +47,7 @@ After dinner, my parents went to the balcony to look over the city. This left me
 
 “No… I don’t think that it does.” Tony sighed.
 
-“Well Ben its a reference to Venus. Now explain to me why you don’t like it.” Ben looked again at the painting.
+“Well Ben its a reference to Venus. Now explain to me why you do not like it.” Ben looked again at the painting.
 
 “It’s just not to my taste, but It does have the essence of another painting I like though. ”
 
@@ -59,7 +59,7 @@ After dinner, my parents went to the balcony to look over the city. This left me
 
 “Why? You asked for my opinion and I gave it to you,” said Ben curtly.
 
-“Because I expected eloquence. Especially considering all that you’ve read, all the people you’ve dined with. How you can  look at such a work and say something like that, with no reasoning?”
+“Because I expected eloquence. Especially considering all that you’ve read, all the people you’ve dined with. How you can look at such a work and say something as uneducated as that?”
 
 “I don’t want to speak about this anymore. ” Ben went quiet and withdrew. The start of a ghastly long silence was beginning, but was interrupted by the swing of the door, as my parents returned. They spoke joyously of the view into the city, and what we would drink tonight. Uncle Tony began to light his pipe, pulling his matches from his blazer and opening them with the same hand. My father reclined into the sofa, stretching his legs out onto the carpet. I began to smoke myself. My father whose presence in a room has only grown with age, began to speak.
 
