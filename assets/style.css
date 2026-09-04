@@ -180,7 +180,8 @@ main {
 .article,
 .paper-main .ltx_page_main,
 .ratio-wrap,
-.cube-wrap {
+.cube-wrap,
+.plotter-wrap {
     width: min(var(--page-width), 100%);
     max-width: 100%;
     aspect-ratio: 8.5 / 11;
@@ -257,7 +258,8 @@ main {
     .article,
     .paper-main .ltx_page_main,
     .ratio-wrap,
-    .cube-wrap {
+    .cube-wrap,
+    .plotter-wrap {
         aspect-ratio: auto;
         padding: 30px 28px 48px;
     }

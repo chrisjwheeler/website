@@ -1,0 +1,805 @@
+<div class="plotter-wrap">
+
+  <header class="plotter-header">
+    <p class="plotter-eyebrow">function visualiser · r² → r⁴</p>
+    <h1>4D plotter</h1>
+    <p class="plotter-lede">Enter four real functions of <em>x</em> and <em>y</em>. One can lift the surface; the others colour it. Drag components between height and colour, then read the discrete swatches as a key to the extra dimensions.</p>
+  </header>
+
+<section class="top-controls">
+    <div class="control-pane">
+      <div class="pane-head"><h2>Functions</h2><span class="small-label">LaTeX input</span></div>
+      <div class="function-list">
+        <div class="function-row"><div class="fn-label">f₁</div><math-field id="f0" aria-label="f1">Re((x+iy)^2)</math-field></div>
+        <div class="function-row"><div class="fn-label">f₂</div><math-field id="f1" aria-label="f2">Im((x+iy)^2)</math-field></div>
+        <div class="function-row"><div class="fn-label">f₃</div><math-field id="f2" aria-label="f3">\frac{1}{x}</math-field></div>
+        <div class="function-row"><div class="fn-label">f₄</div><math-field id="f3" aria-label="f4">0</math-field></div>
+      </div>
+      <div class="domain-strip">
+        <div class="range-group"><span class="small-label">x domain</span><div class="range-pair"><input id="xmin" type="number" step="any" value="-2" aria-label="x minimum"><input id="xmax" type="number" step="any" value="2" aria-label="x maximum"></div></div>
+        <div class="range-group"><span class="small-label">y domain</span><div class="range-pair"><input id="ymin" type="number" step="any" value="-2" aria-label="y minimum"><input id="ymax" type="number" step="any" value="2" aria-label="y maximum"></div></div>
+        <div class="resolution"><span class="small-label">grid resolution</span><div class="resolution-line"><input id="resolution" type="range" min="4" max="30" step="1" value="15"><strong id="resolution-value">15²</strong></div></div>
+      </div>
+    </div>
+
+    <div class="control-pane">
+      <div class="pane-head"><h2>Representation</h2><span class="small-label">drag components to swap</span></div>
+      <table class="assignment-table">
+        <thead><tr><th>Role</th><th>Component</th><th>On</th></tr></thead>
+        <tbody id="assignment-body"></tbody>
+      </table>
+      <div class="palette-block">
+        <div class="palette-row">
+          <div><div class="small-label">colour system</div><div id="palette-name" class="status" style="margin-top:3px">perceptual</div></div>
+          <div class="mode-switch" aria-label="Colour model">
+            <button id="mode-oklab" class="active" type="button">OKLab</button>
+            <button id="mode-cvd" type="button">CVD</button>
+            <button id="mode-rgb" type="button">RGB</button>
+          </div>
+        </div>
+        <div class="palette-info" id="palette-info"></div>
+      </div>
+      <div id="status" class="status">Ready.</div>
+    </div>
+  </section>
+
+  <section class="range-panel" aria-label="Component ranges">
+    <div class="range-panel-head"><h2>Component ranges</h2><span class="small-label">sampled over the current domain</span></div>
+    <div class="component-ranges">
+      <div class="component-range"><span class="range-fn">f₁</span> ∈ <span id="component-range-0" class="range-value">[—, —]</span></div>
+      <div class="component-range"><span class="range-fn">f₂</span> ∈ <span id="component-range-1" class="range-value">[—, —]</span></div>
+      <div class="component-range"><span class="range-fn">f₃</span> ∈ <span id="component-range-2" class="range-value">[—, —]</span></div>
+      <div class="component-range"><span class="range-fn">f₄</span> ∈ <span id="component-range-3" class="range-value">[—, —]</span></div>
+    </div>
+  </section>
+
+  <div id="visualisation-stage" class="visualisation-stage">
+  <section class="plot-section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">plot</div>
+        <h2>Function surface</h2>
+      </div>
+      <div class="section-meta">
+        <span class="badge" id="plot-dimension">3D surface</span>
+        <span class="badge" id="z-range">z: —</span>
+        <span class="badge" id="sample-count">100 samples</span>
+        <button id="update" class="primary-btn" type="button">Recompute</button>
+      </div>
+    </div>
+    <div id="plot-wrap"><div id="plot"></div><div id="plot-hint" class="plot-hint">drag: orbit · wheel: zoom · double-click: reset</div></div>
+  </section>
+
+  <section class="key-section">
+    <div class="section-head">
+      <div><div class="eyebrow">colour key</div><h2>Discrete swatches</h2></div>
+      <div class="slice-control" id="slice-control">
+        <div class="slice-control-label">Choose the function held fixed</div>
+        <div class="segmented" id="slice-selector" aria-label="Choose the function held fixed in the colour swatches"></div>
+        <div class="slice-control-help">When three colour functions are active, each swatch varies two functions across its axes while the selected function is held at one of nine values.</div>
+      </div>
+    </div>
+    <div class="key-toolbar">
+      <div class="label-block"><span class="key-title" id="key-title">Colour swatches</span><span class="key-subtitle" id="key-subtitle">Coloured cells are attained on the sampled domain; grey cells are not.</span></div>
+    </div>
+    <div id="key-content"></div>
+  </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<script type="module">
+import "https://esm.run/mathlive@0.110.0";
+import { compile } from "https://esm.run/@cortex-js/compute-engine@0.120.0";
+
+const ROLES = [
+  { id:"vertical", label:"Vertical", sub:"z height" },
+  { id:"color1", label:"Colour 1", sub:"channel A" },
+  { id:"color2", label:"Colour 2", sub:"channel B" },
+  { id:"color3", label:"Colour 3", sub:"channel C" }
+];
+
+const state = {
+  assignments:[0,1,2,3],
+  enabled:[true,true,false,false],
+  colourMode:"oklab",
+  fixedRole:"color1",
+  data:null,
+  draggingRole:null,
+  hoverFilter:null,
+  lockedFilter:null,
+  filterFrame:null
+};
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+
+function theme(){
+  const s = getComputedStyle(document.documentElement);
+  const paper = (s.getPropertyValue("--paper").trim() || "#f4f3ed");
+  const ink = (s.getPropertyValue("--ink").trim() || "#17191b");
+  const muted = (s.getPropertyValue("--paper-muted").trim() || "#656565");
+  const serif = (s.getPropertyValue("--serif").trim() || "serif");
+  return { paper, ink, muted, serif };
+}
+
+const clamp01 = x => Math.max(0,Math.min(1,x));
+const finite = x => Number.isFinite(x);
+const COLOUR_BINS = 9;
+const COLOUR_FLOOR = 0.16; // keep the low end coloured rather than near-black
+const fmt = x => !finite(x) ? "—" : (Math.abs(x)>=1000 || (Math.abs(x)>0 && Math.abs(x)<0.001) ? x.toExponential(3) : (+x.toFixed(4)).toString());
+const axisFmt = x => !finite(x) ? "—" : (Math.abs(x)>=1000 || (Math.abs(x)>0 && Math.abs(x)<0.001) ? x.toExponential(2) : (+x.toFixed(3)).toString());
+function colourBinIndex(t){ return Math.min(COLOUR_BINS-1,Math.floor(clamp01(t)*COLOUR_BINS)); }
+function dataLevelFromBin(k){ return COLOUR_BINS===1 ? 0.5 : k/(COLOUR_BINS-1); }
+function colourLevelFromBin(k){
+  return COLOUR_FLOOR + (1-COLOUR_FLOOR)*dataLevelFromBin(k);
+}
+function quantiseNorm(t){ return colourLevelFromBin(colourBinIndex(t)); }
+function binBoundary(range,k){ return range[0]+(range[1]-range[0])*k/COLOUR_BINS; }
+
+function srgbUnitToLinear(v){ v=clamp01(v); return v<=0.04045 ? v/12.92 : ((v+0.055)/1.055)**2.4; }
+function srgbToLinear(v){ return srgbUnitToLinear(v/255); }
+function linearToSrgb(v){ v=Math.max(0,Math.min(1,v)); return v<=0.0031308 ? 12.92*v : 1.055*(v**(1/2.4))-0.055; }
+function hexToLinear(hex){
+  const n=parseInt(hex.slice(1),16);
+  return [srgbToLinear((n>>16)&255),srgbToLinear((n>>8)&255),srgbToLinear(n&255)];
+}
+function rgbCss(rgb){ return `rgb(${rgb.map(v=>Math.round(clamp01(v)*255)).join(",")})`; }
+
+// Björn Ottosson's OKLab -> linear sRGB transform.
+function oklabToLinearRgbRaw(L,a,b){
+  const l_=L+0.3963377774*a+0.2158037573*b;
+  const m_=L-0.1055613458*a-0.0638541728*b;
+  const s_=L-0.0894841775*a-1.2914855480*b;
+  const l=l_**3, m=m_**3, s=s_**3;
+  return [
+     4.0767416621*l - 3.3077115913*m + 0.2309699292*s,
+    -1.2684380046*l + 2.6097574011*m - 0.3413193965*s,
+    -0.0041960863*l - 0.7034186147*m + 1.7076147010*s
+  ];
+}
+function oklabToSrgb(L,a,b){
+  return oklabToLinearRgbRaw(L,a,b).map(linearToSrgb).map(clamp01);
+}
+
+// Orthonormal OKLab basis. Each axis has the same L projection; the a/b projections are 120° apart.
+const SQ3=Math.sqrt(3), SQ23=Math.sqrt(2/3);
+const OK_BASIS = [
+  [1/SQ3, SQ23, 0],
+  [1/SQ3, -SQ23/2, Math.SQRT1_2],
+  [1/SQ3, -SQ23/2, -Math.SQRT1_2]
+];
+const OK_CENTER=[0.72,0,0];
+const CVD_HEX=["#0072B2","#E69F00","#009E73"]; // blue, orange, bluish green (Okabe-Ito)
+const CVD_LINEAR=CVD_HEX.map(hexToLinear);
+const gamutCache=new Map();
+
+function inLinearGamut(rgb,eps=1e-9){ return rgb.every(v=>v>=-eps && v<=1+eps); }
+function activeMask(active){ return active.reduce((m,on,i)=>m|(on?(1<<i):0),0); }
+function activeIndices(active){ return active.map((on,i)=>on?i:-1).filter(i=>i>=0); }
+
+// Largest symmetric OKLab box around the neutral centre that remains inside sRGB.
+// With fewer active channels the box expands automatically, so a single active
+// component gets a substantially wider colour range than a three-channel plot.
+function oklabBoxScale(active){
+  const mask=activeMask(active); if(!mask) return 0;
+  if(gamutCache.has(mask)) return gamutCache.get(mask);
+  const inds=activeIndices(active);
+  const fits=(scale)=>{
+    const corners=1<<inds.length;
+    for(let c=0;c<corners;c++){
+      const lab=[...OK_CENTER];
+      inds.forEach((axis,k)=>{
+        const sign=(c&(1<<k))?1:-1;
+        for(let q=0;q<3;q++) lab[q]+=sign*scale*OK_BASIS[axis][q];
+      });
+      if(!inLinearGamut(oklabToLinearRgbRaw(...lab))) return false;
+    }
+    return true;
+  };
+  let lo=0,hi=.6;
+  for(let n=0;n<32;n++){ const mid=(lo+hi)/2; if(fits(mid))lo=mid;else hi=mid; }
+  gamutCache.set(mask,lo*.995); // tiny guard against browser rounding at the boundary
+  return lo*.995;
+}
+
+function cvdMixScale(active){
+  const sum=[0,0,0];
+  for(let i=0;i<3;i++) if(active[i]) for(let c=0;c<3;c++) sum[c]+=CVD_LINEAR[i][c];
+  return 1/Math.max(1,...sum);
+}
+
+function colourFromChannels(vals, active){
+  if(state.colourMode==="oklab"){
+    const scale=oklabBoxScale(active);
+    let lab=[...OK_CENTER];
+    for(let i=0;i<3;i++){
+      if(!active[i]) continue;
+      const d=(2*clamp01(vals[i])-1)*scale;
+      lab[0]+=d*OK_BASIS[i][0]; lab[1]+=d*OK_BASIS[i][1]; lab[2]+=d*OK_BASIS[i][2];
+    }
+    return oklabToSrgb(...lab);
+  }
+  if(state.colourMode==="rgb"){
+    // Direct sRGB channel encoding: Colour 1 = R, Colour 2 = G, Colour 3 = B.
+    // Inactive channels are exactly zero. Active components use a slightly lifted
+    // low endpoint so minimum values remain visibly coloured rather than black.
+    return [
+      active[0] ? clamp01(vals[0]) : 0,
+      active[1] ? clamp01(vals[1]) : 0,
+      active[2] ? clamp01(vals[2]) : 0
+    ];
+  }
+  // Additive linear-light mixing. The shared colour floor keeps minimum values
+  // visibly coloured while maxima still reach the full Okabe-Ito anchor colour.
+  // For multiple channels, one fixed scale keeps the entire active colour cube in gamut.
+  const lin=[0,0,0], gain=cvdMixScale(active);
+  for(let i=0;i<3;i++) if(active[i]){
+    const t=clamp01(vals[i]);
+    for(let c=0;c<3;c++) lin[c]+=gain*t*CVD_LINEAR[i][c];
+  }
+  return lin.map(linearToSrgb).map(clamp01);
+}
+
+function channelEndpointCss(i, high){
+  const vals=[.5,.5,.5],active=[false,false,false];
+  vals[i]=high?1:0; active[i]=true;
+  return rgbCss(colourFromChannels(vals,active));
+}
+function segmentedAxisGradient(i){
+  const active=[false,false,false]; active[i]=true;
+  const stops=[];
+  for(let k=0;k<COLOUR_BINS;k++){
+    const vals=[.5,.5,.5]; vals[i]=colourLevelFromBin(k);
+    const c=rgbCss(colourFromChannels(vals,active));
+    const a=(100*k/COLOUR_BINS).toFixed(5), b=(100*(k+1)/COLOUR_BINS).toFixed(5);
+    stops.push(`${c} ${a}%`,`${c} ${b}%`);
+  }
+  return `linear-gradient(90deg,${stops.join(",")})`;
+}
+
+function renderPaletteInfo(){
+  const root=$("#palette-info");
+  if(state.colourMode==="oklab"){
+    $("#palette-name").textContent="perceptual · gamut-filled";
+    root.innerHTML=[0,1,2].map(i=>`<div class="axis-preview"><strong>Colour ${i+1}</strong><div class="axis-bar" style="background:${segmentedAxisGradient(i)}"></div></div>`).join("")+
+      `<p class="explain">Each active component is split into nine equal value intervals spanning its sampled minimum to maximum. Those intervals use nine palette levels including both colour-axis endpoints. The OKLab colour box expands to the largest symmetric range that fits in sRGB for the currently active channels, so fewer colour channels use more of the available gamut.</p>`;
+  }else if(state.colourMode==="rgb"){
+    $("#palette-name").textContent="direct RGB · lifted low end";
+    const RGB_HEX=["#ff0000","#00ff00","#0000ff"];
+    root.innerHTML=RGB_HEX.map((c,i)=>`<div class="axis-preview"><strong>Colour ${i+1}</strong><div class="axis-bar" style="background:${segmentedAxisGradient(i)}"></div></div>`).join("")+
+      `<p class="explain">Direct RGB encoding: Colour 1 controls red, Colour 2 green, and Colour 3 blue. Every active component is split into nine equal value intervals; the nine RGB levels run from a lifted low endpoint to 1, avoiding near-black minima.</p>`;
+  }else{
+    $("#palette-name").textContent="accessibility-biased · full range";
+    root.innerHTML=CVD_HEX.map((c,i)=>`<div class="axis-preview"><strong>Colour ${i+1}</strong><div class="axis-bar" style="background:${segmentedAxisGradient(i)}"></div></div>`).join("")+
+      `<p class="explain">Each active component is split into nine equal value intervals spanning its sampled minimum to maximum. A single channel starts above black and runs to its full Okabe–Ito anchor; multiple channels are mixed in linear light with only the scaling needed to keep their combined cube in gamut.</p>`;
+  }
+}
+
+function renderAssignments(){
+  const body=$("#assignment-body"); body.innerHTML="";
+  ROLES.forEach((role,ri)=>{
+    const tr=document.createElement("tr"); tr.dataset.role=ri;
+    tr.innerHTML=`<td class="role-name">${role.label}<span class="role-sub">${role.sub}</span></td>
+      <td><div class="fn-chip" draggable="true" data-role="${ri}"><span>f<sub>${state.assignments[ri]+1}</sub></span><span class="drag-mark">⋮⋮</span></div></td>
+      <td><label class="toggle"><input type="checkbox" data-toggle-role="${ri}" ${state.enabled[ri]?"checked":""}><span class="slider"></span></label></td>`;
+    body.appendChild(tr);
+  });
+  $$(".fn-chip").forEach(chip=>{
+    chip.addEventListener("dragstart",e=>{ state.draggingRole=+chip.dataset.role; chip.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; });
+    chip.addEventListener("dragend",()=>{ state.draggingRole=null; chip.classList.remove("dragging"); $$("tr").forEach(r=>r.classList.remove("drop-target")); });
+  });
+  $$("#assignment-body tr").forEach(tr=>{
+    tr.addEventListener("dragover",e=>{e.preventDefault();tr.classList.add("drop-target")});
+    tr.addEventListener("dragleave",()=>tr.classList.remove("drop-target"));
+    tr.addEventListener("drop",e=>{
+      e.preventDefault();tr.classList.remove("drop-target");
+      const to=+tr.dataset.role, from=state.draggingRole;
+      if(from===null||from===to)return;
+      [state.assignments[from],state.assignments[to]]=[state.assignments[to],state.assignments[from]];
+      renderAssignments(); scheduleUpdate();
+    });
+  });
+  $$('[data-toggle-role]').forEach(t=>t.addEventListener("change",()=>{ state.enabled[+t.dataset.toggleRole]=t.checked; scheduleUpdate(); }));
+}
+
+let debounce=null;
+function scheduleUpdate(){ clearTimeout(debounce); debounce=setTimeout(recompute,180); }
+
+function toCompileLatex(latex){
+  return latex
+    .replace(/\\text\{Re\}/g,'\\Re')
+    .replace(/\\text\{Im\}/g,'\\Im')
+    .replace(/\\mathrm\{Re\}/g,'\\Re')
+    .replace(/\\mathrm\{Im\}/g,'\\Im')
+    .replace(/(^|[^\\a-zA-Z])Re\s*\(/g,'$1\\Re(')
+    .replace(/(^|[^\\a-zA-Z])Im\s*\(/g,'$1\\Im(');
+}
+
+async function compileFunctions(){
+  await customElements.whenDefined("math-field");
+  const compiled=[]; let errors=[];
+  for(let i=0;i<4;i++){
+    const mf=$("#f"+i); mf.classList.remove("invalid");
+    const latex=mf.value?.trim() || "";
+    if(!latex){ compiled.push(null); continue; }
+    try{
+      const result=compile(toCompileLatex(latex));
+      if(!result?.run) throw new Error("Expression could not be compiled");
+      compiled.push(result.run);
+    }catch(err){ compiled.push(null); mf.classList.add("invalid"); errors.push(`f${i+1}: ${err?.message||"invalid expression"}`); }
+  }
+  return {compiled,errors};
+}
+
+function safeEval(fn,x,y){
+  if(!fn) return NaN;
+  try{
+    const v=fn({x,y});
+    return typeof v==="number" && Number.isFinite(v) ? v : NaN;
+  }catch{return NaN;}
+}
+
+function roleIndex(id){return ROLES.findIndex(r=>r.id===id)}
+function colourRoleIndices(){return [1,2,3]}
+function rangeOf(arr){
+  let mn=Infinity,mx=-Infinity;
+  for(const v of arr) if(finite(v)){ if(v<mn)mn=v;if(v>mx)mx=v; }
+  if(mn===Infinity)return [NaN,NaN];
+  if(mx===mn){ const eps=Math.abs(mx)*1e-9+1e-9; return [mn-eps,mx+eps]; }
+  return [mn,mx];
+}
+function norm(v,r){ return finite(v)&&finite(r[0]) ? clamp01((v-r[0])/(r[1]-r[0])) : .5; }
+
+let lastPlotWas3D=null;
+
+function meanFinite4(a,b,c,d){
+  let sum=0,n=0;
+  for(const v of [a,b,c,d]) if(finite(v)){sum+=v;n++;}
+  return n?sum/n:NaN;
+}
+
+function cellChannelBins(data,a,b,c,d){
+  return [0,1,2].map(ci=>{
+    const vals=data.roleValues[ci+1];
+    const v=meanFinite4(vals[a],vals[b],vals[c],vals[d]);
+    return colourBinIndex(norm(v,data.ranges[ci+1]));
+  });
+}
+
+function filterMatchesBins(bins,filter){
+  if(!filter) return true;
+  for(const [riStr,bin] of Object.entries(filter)){
+    const ri=Number(riStr);
+    if(bins[ri-1]!==bin) return false;
+  }
+  return true;
+}
+
+function activePlotFilter(){ return state.lockedFilter || state.hoverFilter; }
+
+function filterKey(filter){
+  if(!filter) return '';
+  return Object.keys(filter).sort().map(k=>`${k}:${filter[k]}`).join(',');
+}
+
+function parseFilterSpec(spec){
+  if(!spec) return null;
+  const out={};
+  for(const part of spec.split(',')){
+    const [ri,bin]=part.split(':').map(Number);
+    if(Number.isInteger(ri)&&Number.isInteger(bin)) out[ri]=bin;
+  }
+  return Object.keys(out).length?out:null;
+}
+
+function filterSpec(...pairs){
+  return pairs.filter(Boolean).map(([ri,bin])=>`${ri}:${bin}`).join(',');
+}
+
+function filterIsAttained(data,filter){
+  if(!filter) return false;
+  const {N}=data;
+  for(let j=0;j<N-1;j++) for(let i=0;i<N-1;i++){
+    const a=j*N+i,b=a+1,c=a+N,d=c+1;
+    const bins=cellChannelBins(data,a,b,c,d);
+    if(filterMatchesBins(bins,filter)) return true;
+  }
+  return false;
+}
+
+function scheduleFilterPlot(){
+  if(state.filterFrame) cancelAnimationFrame(state.filterFrame);
+  state.filterFrame=requestAnimationFrame(()=>{
+    state.filterFrame=null;
+    if(state.data) drawSurface(state.data);
+    const locked=filterKey(state.lockedFilter);
+    $$('.swatch-cell').forEach(el=>el.classList.toggle('filter-locked',!!locked && filterKey(parseFilterSpec(el.dataset.filter))===locked));
+  });
+}
+
+function fadeRgb(rgb,amount=.72){
+  // Pull non-selected cells toward a light neutral while preserving enough
+  // luminance variation to keep the surface geometry legible.
+  const neutral=[0.82,0.82,0.79];
+  return rgb.map((v,i)=>clamp01((1-amount)*v + amount*neutral[i]));
+}
+
+function categoricalColourScale(activeColours,includeFaded=false){
+  const total=COLOUR_BINS**3;
+  const paletteSize=includeFaded?2*total:total;
+  const scale=[];
+  for(let idx=0;idx<paletteSize;idx++){
+    const faded=idx>=total;
+    const baseIdx=faded?idx-total:idx;
+    const b0=Math.floor(baseIdx/(COLOUR_BINS*COLOUR_BINS));
+    const rem=baseIdx%(COLOUR_BINS*COLOUR_BINS);
+    const b1=Math.floor(rem/COLOUR_BINS), b2=rem%COLOUR_BINS;
+    const vals=[b0,b1,b2].map(colourLevelFromBin);
+    const rgb=colourFromChannels(vals,activeColours);
+    const c=rgbCss(faded?fadeRgb(rgb):rgb);
+    scale.push([idx/paletteSize,c],[(idx+1)/paletteSize,c]);
+  }
+  return scale;
+}
+
+function flatCellGap(N){
+  // Screen-space gap for the 2D heatmap. Coarse grids get a strong border;
+  // dense grids taper smoothly so the colour field remains readable.
+  return Math.max(1, Math.min(8, 16/Math.sqrt(N)));
+}
+
+function surfaceBorderFraction(N){
+  // Fraction of each parameter cell reserved on EACH side for the geometric
+  // border. This is deliberately defined in surface geometry rather than as a
+  // WebGL line width, avoiding the z-fighting of a scatter3d overlay.
+  return Math.max(0.018, Math.min(0.05, 0.015 + 0.07/Math.sqrt(N)));
+}
+
+function drawFlatPlot(data,activeColours){
+  const {N,xs,ys}=data;
+  const xCenters=Array.from({length:N-1},(_,i)=>(xs[i]+xs[i+1])/2);
+  const yCenters=Array.from({length:N-1},(_,j)=>(ys[j]+ys[j+1])/2);
+  const z=[];
+  for(let j=0;j<N-1;j++){
+    const row=[];
+    for(let i=0;i<N-1;i++){
+      const a=j*N+i,b=a+1,c=a+N,d=c+1;
+      const bins=cellChannelBins(data,a,b,c,d);
+      const filter=activePlotFilter();
+      const base=bins[0]*COLOUR_BINS*COLOUR_BINS+bins[1]*COLOUR_BINS+bins[2];
+      // During swatch emphasis, unmatched cells are genuinely absent rather
+      // than recoloured. Plotly renders null heatmap cells as transparent,
+      // so the surrounding coordinate system stays fixed while only the
+      // selected colour region remains visible.
+      row.push(filter && !filterMatchesBins(bins,filter) ? null : base);
+    }
+    z.push(row);
+  }
+  const total=COLOUR_BINS**3;
+  const gap=flatCellGap(N);
+  const trace={
+    type:'heatmap',x:xCenters,y:yCenters,z,
+    zmin:-0.5,zmax:total-0.5,
+    colorscale:categoricalColourScale(activeColours,false),
+    showscale:false,zsmooth:false,xgap:gap,ygap:gap,
+    hovertemplate:'x=%{x:.5g}<br>y=%{y:.5g}<extra></extra>'
+  };
+  const layout={
+    margin:{l:68,r:22,t:22,b:58},
+    paper_bgcolor:theme().paper,plot_bgcolor:theme().paper,
+    font:{family:theme().serif,color:theme().ink,size:13},
+    xaxis:{title:{text:'x',standoff:10,font:{size:15}},tickfont:{size:13},range:[data.xmin,data.xmax],fixedrange:true,showgrid:false,zeroline:false,linecolor:theme().ink,linewidth:2,mirror:true,ticks:'outside',constrain:'domain'},
+    yaxis:{title:{text:'y',standoff:10,font:{size:15}},tickfont:{size:13},range:[data.ymin,data.ymax],fixedrange:true,showgrid:false,zeroline:false,linecolor:theme().ink,linewidth:2,mirror:true,ticks:'outside',scaleanchor:'x',scaleratio:1,constrain:'domain'},
+    dragmode:false,
+    uirevision:'flat-plot-fixed'
+  };
+  Plotly.react('plot',[trace],layout,{responsive:true,displaylogo:false,scrollZoom:false,staticPlot:false,modeBarButtonsToRemove:['zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d','autoScale2d','resetScale2d']});
+}
+
+function cellInterpolatedZ(z00,z10,z01,z11,u,v){
+  // Bilinear interpolation gives a stable local patch through the sampled
+  // values and lets the border be actual geometry rather than an overlay.
+  return (1-u)*(1-v)*z00 + u*(1-v)*z10 + (1-u)*v*z01 + u*v*z11;
+}
+
+function draw3DPlot(data,activeColours){
+  const {N,xs,ys,roleValues}=data;
+  const zv=roleValues[0], x=[],y=[],z=[],ii=[],jj=[],kk=[],facecolor=[];
+  const g=surfaceBorderFraction(N);
+  const uv=[0,g,1-g,1];
+  const borderColour=theme().ink;
+  let vertexBase=0;
+
+  for(let j=0;j<N-1;j++) for(let i=0;i<N-1;i++){
+    const a=j*N+i,b=a+1,c=a+N,d=c+1;
+    const z00=zv[a],z10=zv[b],z01=zv[c],z11=zv[d];
+    if(![z00,z10,z01,z11].every(finite))continue;
+
+    const bins=cellChannelBins(data,a,b,c,d);
+    const vals=bins.map(colourLevelFromBin);
+    const rawColour=colourFromChannels(vals,activeColours);
+    const filter=activePlotFilter();
+    const matches=!filter || filterMatchesBins(bins,filter);
+    const cellColour=rgbCss(rawColour);
+    const dx=xs[i+1]-xs[i], dy=ys[j+1]-ys[j];
+
+    // A 4x4 local vertex lattice makes a 3x3 set of sub-cells. Only the
+    // centre sub-cell carries the data colour; the surrounding eight are the
+    // border. As a result, borders are part of the mesh itself and cannot
+    // flicker against it as the camera moves.
+    for(let vv=0;vv<4;vv++) for(let uu=0;uu<4;uu++){
+      const u=uv[uu], v=uv[vv];
+      x.push(xs[i] + u*dx);
+      y.push(ys[j] + v*dy);
+      z.push(cellInterpolatedZ(z00,z10,z01,z11,u,v));
+    }
+
+    for(let sv=0;sv<3;sv++) for(let su=0;su<3;su++){
+      const isCentre=(su===1 && sv===1);
+      // Keep the geometric border visible, but omit the coloured centre of
+      // non-matching cells entirely. This makes the unselected region fully
+      // clear instead of merely faded while preserving the surface lattice.
+      if(isCentre && !matches) continue;
+      const p00=vertexBase + sv*4 + su;
+      const p10=p00+1;
+      const p01=p00+4;
+      const p11=p01+1;
+      ii.push(p00,p10);
+      jj.push(p01,p01);
+      kk.push(p10,p11);
+      const fc=isCentre ? cellColour : borderColour;
+      facecolor.push(fc,fc);
+    }
+    vertexBase+=16;
+  }
+
+  const mesh={
+    type:'mesh3d',x,y,z,i:ii,j:jj,k:kk,facecolor,
+    flatshading:true,hoverinfo:'skip',showscale:false,
+    lighting:{ambient:1,diffuse:0,specular:0,roughness:1,fresnel:0},
+    lightposition:{x:0,y:0,z:1e5}
+  };
+  const scene={
+    bgcolor:theme().paper,aspectmode:'auto',
+    xaxis:{title:{text:'x',font:{size:15}},tickfont:{size:13},range:[data.xmin,data.xmax],autorange:false,showgrid:true,gridcolor:theme().muted,gridwidth:2,zeroline:false,showbackground:true,backgroundcolor:theme().paper,linecolor:theme().ink,linewidth:2,ticks:'outside'},
+    yaxis:{title:{text:'y',font:{size:15}},tickfont:{size:13},range:[data.ymin,data.ymax],autorange:false,showgrid:true,gridcolor:theme().muted,gridwidth:2,zeroline:false,showbackground:true,backgroundcolor:theme().paper,linecolor:theme().ink,linewidth:2,ticks:'outside'},
+    zaxis:{title:{text:`f${state.assignments[0]+1}`,font:{size:15}},tickfont:{size:13},range:data.ranges[0].slice(),autorange:false,showgrid:true,gridcolor:theme().muted,gridwidth:2,zeroline:false,showbackground:true,backgroundcolor:theme().paper,linecolor:theme().ink,linewidth:2,ticks:'outside'},
+    camera:{eye:{x:1.45,y:-1.55,z:1.15}},
+    uirevision:'surface-camera'
+  };
+  const layout={
+    margin:{l:0,r:0,t:0,b:0},paper_bgcolor:theme().paper,font:{family:theme().serif,color:theme().ink,size:13},
+    scene,uirevision:'surface-camera'
+  };
+  Plotly.react('plot',[mesh],layout,{responsive:true,displaylogo:false,scrollZoom:true,modeBarButtonsToRemove:['toImage']});
+}
+
+function refreshVisualisation(data){
+  renderColourKey(data);
+  void $("#plot-wrap").offsetWidth;
+  drawSurface(data);
+  if(window.Plotly) Plotly.Plots.resize("plot");
+}
+
+function lockMiddleSwatch(){
+  const infos=state.data?activeColourInfos(state.data):[];
+  if(!infos.length) return;
+  const mid=Math.floor(COLOUR_BINS/2);
+  const spec=filterSpec(...infos.map(info=>[info.ri,mid]));
+  const cell=$$("#key-content .swatch-cell[data-filter]").find(el=>el.dataset.filter===spec)
+    || $$("#key-content .swatch-cell[data-filter]")[mid];
+  if(!cell) return;
+  state.lockedFilter=parseFilterSpec(cell.dataset.filter);
+  state.hoverFilter=null;
+  scheduleFilterPlot();
+}
+
+function drawSurface(data){
+  const verticalOn=state.enabled[0] && data.roleValues[0].some(finite);
+  const activeColours=colourRoleIndices().map(ri=>state.enabled[ri] && data.roleValues[ri].some(finite));
+  if(verticalOn) draw3DPlot(data,activeColours); else drawFlatPlot(data,activeColours);
+  lastPlotWas3D=verticalOn;
+  $('#plot-dimension').textContent=verticalOn?'3D surface':'2D coloured grid';
+  $('#z-range').textContent=verticalOn?`z: ${fmt(data.ranges[0][0])} … ${fmt(data.ranges[0][1])}`:'z disabled';
+  const filtering=!!activePlotFilter();
+  $('#plot-hint').textContent=filtering ? (state.lockedFilter?'swatch selection locked · click selected swatch to clear':'swatch selection preview · move away to restore') : (verticalOn?'drag: orbit · wheel: zoom · double-click: reset':'fixed 2D view');
+}
+
+function activeColourInfos(data){
+  return [1,2,3].filter(ri=>state.enabled[ri] && data.roleValues[ri].some(finite)).map(ri=>({ri,ci:ri-1,role:ROLES[ri],fn:state.assignments[ri],range:data.ranges[ri]}));
+}
+function swatchCellColour(xInfo,yInfo,ix,jy,fixedInfo=null,fixedBin=null){
+  const active=[false,false,false];
+  active[xInfo.ci]=true; active[yInfo.ci]=true;
+  const vals=[.5,.5,.5];
+  vals[xInfo.ci]=colourLevelFromBin(ix);
+  vals[yInfo.ci]=colourLevelFromBin(jy);
+  if(fixedInfo){ active[fixedInfo.ci]=true; vals[fixedInfo.ci]=colourLevelFromBin(fixedBin); }
+  return rgbCss(colourFromChannels(vals,active));
+}
+
+function swatchAxisTicks(range,vertical=false){
+  return Array.from({length:COLOUR_BINS+1},(_,k)=>{
+    const pct=100*k/COLOUR_BINS;
+    const value=axisFmt(binBoundary(range,k));
+    if(vertical){
+      return `<span class="swatch-y-tick" style="bottom:${pct}%">${value}</span>`;
+    }
+    return `<span class="swatch-x-tick" style="left:${pct}%">${value}</span>`;
+  }).join('');
+}
+
+function swatchMatrixHTML(data,xInfo,yInfo,fixedInfo=null,fixedBin=null){
+  let cells='';
+  for(let jy=COLOUR_BINS-1;jy>=0;jy--) for(let ix=0;ix<COLOUR_BINS;ix++){
+    const colour=swatchCellColour(xInfo,yInfo,ix,jy,fixedInfo,fixedBin);
+    const xlo=binBoundary(xInfo.range,ix), xhi=binBoundary(xInfo.range,ix+1);
+    const ylo=binBoundary(yInfo.range,jy), yhi=binBoundary(yInfo.range,jy+1);
+    let title=`f${xInfo.fn+1}: ${axisFmt(xlo)} to ${axisFmt(xhi)}; f${yInfo.fn+1}: ${axisFmt(ylo)} to ${axisFmt(yhi)}`;
+    if(fixedInfo){
+      const flo=binBoundary(fixedInfo.range,fixedBin), fhi=binBoundary(fixedInfo.range,fixedBin+1);
+      title+=`; f${fixedInfo.fn+1}: ${axisFmt(flo)} to ${axisFmt(fhi)}`;
+    }
+    const spec=filterSpec([xInfo.ri,ix],[yInfo.ri,jy],fixedInfo?[fixedInfo.ri,fixedBin]:null);
+    const filter=parseFilterSpec(spec);
+    const attained=filterIsAttained(data,filter);
+    cells+=attained
+      ? `<div class="swatch-cell" data-filter="${spec}" style="background:${colour}" title="${title} · hover to emphasise · click to lock"></div>`
+      : `<div class="swatch-cell unattained" title="${title} · not attained on the sampled domain"></div>`;
+  }
+  const fixedCaption=fixedInfo
+    ? `Function ${fixedInfo.fn+1} = ${axisFmt(fixedInfo.range[0] + (fixedInfo.range[1]-fixedInfo.range[0]) * dataLevelFromBin(fixedBin))}`
+    : '';
+  return `<div class="swatch-card">
+    <div class="swatch-fixed">${fixedCaption}</div>
+    <div class="swatch-matrix-shell">
+      <div class="swatch-y"><span class="axis-name">Function ${yInfo.fn+1}</span><div class="swatch-y-ticks">${swatchAxisTicks(yInfo.range,true)}</div></div>
+      <div class="swatch-matrix">${cells}</div>
+      <div class="swatch-x"><div class="swatch-x-ticks">${swatchAxisTicks(xInfo.range,false)}</div><span class="axis-name">Function ${xInfo.fn+1}</span></div>
+    </div>
+  </div>`;
+}
+
+function oneDimensionalSwatchHTML(data,a){
+  const active=[false,false,false]; active[a.ci]=true;
+  let cells='';
+  for(let k=0;k<COLOUR_BINS;k++){
+    const vals=[.5,.5,.5]; vals[a.ci]=colourLevelFromBin(k);
+    const colour=rgbCss(colourFromChannels(vals,active));
+    const lo=binBoundary(a.range,k), hi=binBoundary(a.range,k+1);
+    const spec=filterSpec([a.ri,k]);
+    const attained=filterIsAttained(data,parseFilterSpec(spec));
+    cells+=attained
+      ? `<div class="swatch-cell" data-filter="${spec}" style="background:${colour}" title="f${a.fn+1}: ${axisFmt(lo)} to ${axisFmt(hi)} · hover to emphasise · click to lock"></div>`
+      : `<div class="swatch-cell unattained" title="f${a.fn+1}: ${axisFmt(lo)} to ${axisFmt(hi)} · not attained on the sampled domain"></div>`;
+  }
+  return `<div class="swatch-strip-card">
+    <div class="swatch-strip">${cells}</div>
+    <div class="swatch-x"><div class="swatch-x-ticks">${swatchAxisTicks(a.range,false)}</div><span class="axis-name">Function ${a.fn+1}</span></div>
+  </div>`;
+}
+
+function renderColourKey(data){
+  const infos=activeColourInfos(data), root=$("#key-content"), selector=$("#slice-selector"); selector.innerHTML="";
+  const stage=$("#visualisation-stage");
+  stage.classList.toggle("side-key", infos.length===1 || infos.length===2);
+  $("#slice-control").style.display=infos.length===3?"grid":"none";
+  if(infos.length===0){
+    $("#key-title").textContent="No active colour channels";$("#key-subtitle").textContent="Enable one or more colour rows to build a key.";root.innerHTML=`<div class="empty-key">Colour is neutral because all three colour rows are off.</div>`;return;
+  }
+  if(infos.length===1){
+    const a=infos[0];$("#key-title").textContent=`Colour ${a.ci+1} · nine discrete levels`;$("#key-subtitle").textContent=`Hover a colour to isolate that function range on the plot; click to lock it.`;
+    root.innerHTML=`<div class="single-key">${oneDimensionalSwatchHTML(data,a)}</div>`;return;
+  }
+  if(infos.length===2){
+    const [a,b]=infos;$("#key-title").textContent=`Colour ${a.ci+1} × Colour ${b.ci+1}`;$("#key-subtitle").textContent=`Hover a square to isolate its two function ranges on the plot; click to lock the selection.`;
+    root.innerHTML=`<div class="single-key">${swatchMatrixHTML(data,a,b)}</div>`;return;
+  }
+  const validIds=infos.map(o=>o.role.id);if(!validIds.includes(state.fixedRole))state.fixedRole=validIds[0];
+  infos.forEach(o=>{
+    const b=document.createElement("button");
+    b.type="button";
+    const isFixed=o.role.id===state.fixedRole;
+    b.textContent=isFixed?`Fixed: Function ${o.fn+1}`:`Fix Function ${o.fn+1}`;
+    b.title=`Hold Function ${o.fn+1} fixed and show Functions ${infos.filter(q=>q!==o).map(q=>q.fn+1).join(" and ")} on the swatch axes`;
+    b.className=isFixed?"active":"";
+    b.addEventListener("click",()=>{state.fixedRole=o.role.id;renderColourKey(data)});
+    selector.appendChild(b)
+  });
+  const fixed=infos.find(o=>o.role.id===state.fixedRole), others=infos.filter(o=>o!==fixed);
+  $("#key-title").textContent=`Function ${fixed.fn+1} held fixed`;
+  $("#key-subtitle").textContent=`Each square isolates the corresponding ranges of Functions ${others[0].fn+1} and ${others[1].fn+1} at the shown fixed value of Function ${fixed.fn+1}. Hover to preview; click to lock.`;
+  root.innerHTML=`<div class="swatch-grid">${Array.from({length:COLOUR_BINS},(_,i)=>`<div class="slice">${swatchMatrixHTML(data,others[0],others[1],fixed,i)}</div>`).join("")}</div>`;
+}
+
+async function recompute(){
+  state.hoverFilter=null; state.lockedFilter=null;
+  const status=$("#status");status.className="status";status.textContent="Computing…";
+  const xmin=+$(`#xmin`).value,xmax=+$(`#xmax`).value,ymin=+$(`#ymin`).value,ymax=+$(`#ymax`).value,N=Math.min(30,Math.max(4,Math.round(+$(`#resolution`).value)));
+  if(![xmin,xmax,ymin,ymax].every(finite)||!(xmax>xmin)||!(ymax>ymin)){status.className="status error";status.textContent="Domain ranges must be finite and increasing.";return;}
+  const {compiled,errors}=await compileFunctions();
+  const xs=Array.from({length:N},(_,i)=>xmin+(xmax-xmin)*i/(N-1)),ys=Array.from({length:N},(_,j)=>ymin+(ymax-ymin)*j/(N-1));
+  const componentValues=Array.from({length:4},()=>new Float64Array(N*N));
+  for(const arr of componentValues) arr.fill(NaN);
+  for(let fi=0;fi<4;fi++){
+    const fn=compiled[fi];
+    if(!fn) continue;
+    for(let j=0;j<N;j++)for(let i=0;i<N;i++) componentValues[fi][j*N+i]=safeEval(fn,xs[i],ys[j]);
+  }
+  const componentRanges=componentValues.map(rangeOf);
+  componentRanges.forEach((r,fi)=>{
+    const el=$(`#component-range-${fi}`);
+    el.textContent=(r && finite(r[0]) && finite(r[1])) ? `[${fmt(r[0])}, ${fmt(r[1])}]` : '[—, —]';
+  });
+  const roleValues=ROLES.map((_,ri)=>{
+    if(!state.enabled[ri]){ const a=new Float64Array(N*N); a.fill(NaN); return a; }
+    return componentValues[state.assignments[ri]];
+  });
+  const ranges=roleValues.map(rangeOf);
+  state.data={N,xs,ys,xmin,xmax,ymin,ymax,roleValues,ranges,componentValues,componentRanges};
+  refreshVisualisation(state.data);
+  $("#sample-count").textContent=`${(N*N).toLocaleString()} samples`;
+  const missing=[];for(let ri=0;ri<4;ri++) if(state.enabled[ri]&&!compiled[state.assignments[ri]])missing.push(ROLES[ri].label);
+  if(errors.length||missing.length){status.className="status error";status.textContent=[...errors,missing.length?`No evaluable function for: ${missing.join(", ")}`:""].filter(Boolean).join(" · ");}
+  else status.textContent="Updated.";
+}
+
+function wireUI(){
+  renderAssignments();renderPaletteInfo();
+  const setColourMode=(mode)=>{
+    state.colourMode=mode;
+    ["oklab","cvd","rgb"].forEach(m=>$("#mode-"+m).classList.toggle("active",m===mode));
+    renderPaletteInfo();
+    if(state.data) refreshVisualisation(state.data);
+  };
+  $("#mode-oklab").addEventListener("click",()=>setColourMode("oklab"));
+  $("#mode-cvd").addEventListener("click",()=>setColourMode("cvd"));
+  $("#mode-rgb").addEventListener("click",()=>setColourMode("rgb"));
+  $("#resolution").addEventListener("input",e=>{$("#resolution-value").textContent=`${e.target.value}²`});
+  $("#resolution").addEventListener("change",scheduleUpdate);
+  ["xmin","xmax","ymin","ymax"].forEach(id=>$("#"+id).addEventListener("change",scheduleUpdate));
+  $("#update").addEventListener("click",recompute);
+  const keyContent=$("#key-content");
+  keyContent.addEventListener("mouseover",e=>{
+    const cell=e.target.closest('.swatch-cell[data-filter]');
+    if(!cell || state.lockedFilter) return;
+    state.hoverFilter=parseFilterSpec(cell.dataset.filter);
+    scheduleFilterPlot();
+  });
+  keyContent.addEventListener("mouseout",e=>{
+    const cell=e.target.closest('.swatch-cell[data-filter]');
+    if(!cell || state.lockedFilter) return;
+    const to=e.relatedTarget?.closest?.('.swatch-cell[data-filter]');
+    if(to) return;
+    state.hoverFilter=null;
+    scheduleFilterPlot();
+  });
+  keyContent.addEventListener("click",e=>{
+    const cell=e.target.closest('.swatch-cell[data-filter]');
+    if(!cell) return;
+    const next=parseFilterSpec(cell.dataset.filter);
+    const same=filterKey(state.lockedFilter)===filterKey(next);
+    state.lockedFilter=same?null:next;
+    state.hoverFilter=null;
+    scheduleFilterPlot();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape' && (state.lockedFilter||state.hoverFilter)){
+      state.lockedFilter=null;state.hoverFilter=null;scheduleFilterPlot();
+    }
+  });
+  customElements.whenDefined("math-field").then(async ()=>{
+    const defaults=["Re((x+iy)^2)","Im((x+iy)^2)","\\frac{1}{x}","0"];
+    $$('math-field').forEach((mf,i)=>{
+      mf.smartFence=true;mf.virtualKeyboardMode="onfocus";
+      if(defaults[i]) mf.setValue(defaults[i]);
+    });
+    await recompute();
+    lockMiddleSwatch();
+    $$('math-field').forEach(mf=>mf.addEventListener("input",scheduleUpdate));
+  });
+}
+
+wireUI();
+</script>
