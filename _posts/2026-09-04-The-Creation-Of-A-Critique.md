@@ -15,7 +15,7 @@ I remember one time so vividly, that week we had read the philosophy of the Pyth
 
 “The square root of two is irrational, what does this mean?”
 
-I’d seen this mentioned, so I knew the answer, “It’s a special type of number which cannot be expressed as the ratio of two wholes.” Uncle Tony smiled at my retort, so Ben pushed again, now speaking with a tremble.
+I’d seen this mentioned, so I knew the answer. “It’s a special type of number which cannot be expressed as the ratio of two wholes.” Uncle Tony smiled at my retort, so Ben pushed again, now speaking with a tremble.
 
 “Name another.” I was momentarily panicked, but again answered decisively.
 
@@ -31,31 +31,31 @@ I’m recalling this all now as it has been six months since I saw Uncle Tony, a
 
 I was right. It never fails to be an eventful evening, and it began with the usual attention to detail typical of my parents. Wine whose vintages marked memories, meals matched to occasions, flowers matched to preference and event. It has the effect of bringing back their youth. The spectacle of it all, is in a way, all consuming, and it’s all that we spoke about. Over dinner we reminisced, how funny, funny stories were, how different things are now. Nothing we spoke about concerned the future or any event of the near past. Hearing Uncle Tony speak of his first encounter with my mother was the only new thing I learned, and he told it excellently, elaborate and grand, theatrical even.
 
-After dinner, my parents went to the balcony to look over the city. This left me, Ben, and Uncle Tony sitting in our old positions. We begun to recreate a Tuesday session; by discussing the significance of something, each eager to have the final word. But something was different now. It no longer felt like me and Ben against Uncle Tony. Ben was rather left out. But he sat listening and was engaged, contributing when he knew the subject. At one point Uncle Tony, after a long period of absence, attempted to bring Ben in.
+After dinner, my parents went to the balcony to look over the city. This left me, Ben, and Uncle Tony sitting in our old positions. We begun to recreate a Tuesday session; by discussing the significance of something, each eager to have the final word. But something was different now. It no longer felt like me and Ben against Uncle Tony. Ben was rather left out. But he sat listening and engaged, contributing when he knew the subject. At one point Uncle Tony, after a long period of absence, attempted to bring Ben in.
 
 “So Benjamin, has any art taken your fancy recently?”
 
 “No, not really,” he said politely. “But I have started a life drawing class.”
 
-“Really?” Inquired Uncle Tony, “no art has taken you? I’ll tell you what Benjamin, you must have a look at the recent works of Ohgane. I think we are seeing a genesis of a new movement.”
+“Is that so?” Goaded Uncle Tony, “No art has taken you? Well that is preposterous. I tell you what Benjamin, you must have a look at the recent works of Ohgane. We are seeing the genesis of a new movement.”
 
 “Isn’t that work there signed Ohgane? The one above the mantle piece.” Ben asked. Tony lent a small portion of his body forward, “It is indeed Benjamin, but his work now is different. It has more provenance, it is more inspired. Like our other old friend, Ohgane spent some time with the sources, and it touched him dearly.” It was good that Ben was involved in the conversation. I walked to the shelf and picked up the catalogue raisonné, and flipped to the work Uncle Tony was referencing. It is an image of lady, who is sat poised against a textured orange background. The composition mirrors that of the Venus, while the strength of the oil and the strength of the light mirror that of Caravaggio. Her form is intentionally distorted and obscured, in reference to some of the works of Freud. You cannot make out her face, and most people fail to realise she is even in the painting. The picture was printed across both pages of the catalogue, and I turned it carefully around. Ben pushed his glasses up his nose, and looked for a while. Uncle Tony started by studying the work, but then turned to Ben.
 
 “It doesn’t speak to me,” said Ben hesitantly.
 
-“Well does the composition remind you of something, at least?”
+“Well does the composition not remind you of something?”
 
 “No… I don’t think that it does.” Tony sighed.
 
-“Well Ben its a reference to Venus. Now explain to me why you do not like it.” Ben looked again at the painting.
+“Well Benjamin its a reference to Venus. Now explain to me why you do not like the painting.” Ben looked again at it again.
 
-“It’s just not to my taste, but it does have the essence of another painting I like though.”
+“It’s just not to my taste, though it does have the essence of another painting I like.”
 
-“Benjamin, you haven’t explained yourself at all. A man in your profession should be good at explaining, if nothing else.” Ben turned to him directly.
+“Benjamin, you have not explained yourself in the slightest. A man in your profession ought to be good at explaining, if nothing else.” Ben turned to him directly.
 
 “Okay sure. The orange is far too saturated. The main body of it, presumably a figure of some kind, is unappealing. Some of the thicker gestural lines are nice, but I don’t like the fuzzy smaller ones. If I were painting it, I would’ve used less lines, its too dense, and—”
 
-“—Stop there you’re embarrassing yourself,” he looked away, and to me. He blew a cloud of smoke.
+“—Stop there you are embarrassing yourself.” Uncle Tony looked away, and to me. 
 
 “Why? You asked for my opinion and I gave it to you,” said Ben curtly.
 
@@ -65,18 +65,20 @@ This even shocked me a little, and Ben was taken aback. He looked at something a
 
 “Boys, it’s so pleasant to have you back, even if it’s just a fleeting visit. Life can get so busy, as I am sure you now know better than me. At my age so little changes. Maybe I’ll go somewhere and bring back an ornament, or meet a friend who will tell me some gossip of the past. It’s only small changes now for me,” he sipped his wine, "like buying an old Ohgane from Uncle Tony.”  
 
-Ben looked away from the room, but I looked at Tony. He had rolled his head back, pipe in mouth, breathing deeply. “Patrick, my dear, have you asked Benjamin what he thinks of Ohange?” He said that he had not. We were all looking at Ben now; he was clenching his teeth. My father was confused, "is everything okay Ben?"
+Ben looked away from the room, but I looked at Tony. He had rolled his head back, pipe in mouth, breathing deeply. “Patrick, my dear, have you asked Benjamin what he thinks of Ohange?” He said that he had not. We were all looking at Ben now; he was clenching his teeth. My father was confused, "Is everything okay Ben?"
 
 “Oh Patrick, do ask him what he thinks.”
 
-“Stop it Tony,” Ben erupted. “If my opinion on it was so horrible, why bring it up? And I don’t care to hear your ramblings on it again either. ” This silenced everyone, and shocked my parents.
+“Stop it Tony,” Ben erupted. “If my opinion on it was so horrible, why bring it up? Why bother? And I don’t care to hear your ramblings on it again either.” This shocked my parents and silenced everyone.
 
 Tony puffed a three clouds in quick succession. “Benjamin some of my ramblings have been cited in books.”
 
 “And no fucker with sense reads them.”
 
- Ben stood up. “Do you know what I thought of just now?” He said walking to the side of the room. “All these years, all that you’ve written, all that you’ve debated.” He picked a notepad from a side table and walked toward Tony. “Three books you’ve published Tony, and how many works have you valued?” He was a few steps away. “You don’t think that you should learn to draw a picture?" He said, then tossed the open notebook toward him. We all watched as it landed on a coffee table and span. Tony looked up from it. “Draw a picture?" He chuckled. "My dear boy, I am a historian, and a critic, not an artist.” Ben stood over Tony who was still sitting. Ben was angry before, but now he just looked arrogant. 
+ Ben stood up. “Do you know what I thought of just now?” He said walking to the side of the room. “All these years, all that you’ve written, all that you’ve debated.” He picked a notepad from a side table and walked toward Tony. “Three books you’ve published Tony, and how many works have you valued?” He was a few steps away. “You don’t think that you should learn to draw a picture?" He said, then tossed the open notebook toward him. We all watched as it landed on a coffee table and span. Tony looked up from it.
  
- “Give it a go Tony, who knows, you might even be good at it.” Tony’s brow narrowed and he blew a thick cloud of smoke in Ben’s face. 
+“Draw a picture?" He chuckled. "My dear boy, I am a historian, and a critic, not an artist.” Ben was angry before, but now he just looked arrogant. He was standing over Tony, just a reach away from him.
+ 
+“Give it a go Tony, who knows, you might even be good at it.” Tony’s brow narrowed and he blew a thick cloud of smoke in Ben’s face. 
  
  I had not once seen him do this.
