@@ -29,9 +29,9 @@ Ben flung up his arms, he was angry and tearful.
 
 I’m recalling this all now as it has been six months since I saw Uncle Tony, and about nine months since I saw my family; I have been away studying in Greece. Night in, night out I have managed to gain a little more from the culture here. I’m working on a piece about the influence of Anagnorisis in literature, and here in the heart of it all, I can properly enter the texts. Part of me is sad that I have to leave. But has been a long time since I have seen the family, and it never fails to produce a story when we reconvene.
 
-I was right. It never fails to be an eventful evening, and it began with the usual attention to detail typical of my parents. Wines whos vintage’s marked memories, meals matched to occasions, flowers matched to preference and event. It has the effect of brining back their youth. The spectacle of it all, is in a way, all consuming, and it’s all that we spoke about. Over dinner we reminisced, how funny, funny stories were, how different things are now. Nothing we spoke about concerned the future or any event of the near past. Hearing Uncle Tony speak of his first encounter with my mother was the only new thing I learned, and he told it excellently. Elaborate and grand, theatrical even.
+I was right. It never fails to be an eventful evening, and it began with the usual attention to detail typical of my parents. Wine whose vintages marked memories, meals matched to occasions, flowers matched to preference and event. It has the effect of bringing back their youth. The spectacle of it all, is in a way, all consuming, and it’s all that we spoke about. Over dinner we reminisced, how funny, funny stories were, how different things are now. Nothing we spoke about concerned the future or any event of the near past. Hearing Uncle Tony speak of his first encounter with my mother was the only new thing I learned, and he told it excellently. Elaborate and grand, theatrical even.
 
-After dinner, my parents went to the balcony to look over the city. This left me, Ben, and Uncle Tony sitting in our old positions. We begun to recreate a Tuesday session; by discussing the significance of something, each eager to have the final word. But something was different now. It no longer felt like me and Ben against Tony. Ben was rather left out. But he sat listening and was engaged, contributing when he knew the subject. At one point Uncle Tony, after and absence from ben, attempted to bring him in.
+After dinner, my parents went to the balcony to look over the city. This left me, Ben, and Uncle Tony sitting in our old positions. We begun to recreate a Tuesday session; by discussing the significance of something, each eager to have the final word. But something was different now. It no longer felt like me and Ben against Tony. Ben was rather left out. But he sat listening and was engaged, contributing when he knew the subject. At one point Uncle Tony, after and absence from Ben, attempted to bring him in.
 
 “So Benjamin, has any art taken your fancy recently?”
 
@@ -49,11 +49,11 @@ After dinner, my parents went to the balcony to look over the city. This left me
 
 “Well Ben its a reference to Venus. Now explain to me why you don’t like it.” Ben looked again at the painting.
 
-“It’s just not too my taste, but It does have the essence of another painting I like though. ”
+“It’s just not to my taste, but It does have the essence of another painting I like though. ”
 
 “Benjamin, you haven’t explained yourself at all. A man in your profession should be good at explaining, if nothing else.” Ben turned to him directly.
 
-“Okay sure. The orange is far too saturated. The main body of it, presumably a figure of some kind, is unappealing. Some of the thicker gestural lines are nice, but I don’t like the fuzzy smaller ones. If I were painting it, I would’ve used less lines, right not its too dense, and—”
+“Okay sure. The orange is far too saturated. The main body of it, presumably a figure of some kind, is unappealing. Some of the thicker gestural lines are nice, but I don’t like the fuzzy smaller ones. If I were painting it, I would’ve used less lines, its too dense, and—”
 
 “—Stop there you’re embarrassing yourself,” he looked away.
 
